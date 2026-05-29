@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import base64
 from dataclasses import asdict, is_dataclass
 from datetime import date, datetime
 from decimal import Decimal
@@ -16,6 +17,8 @@ def to_jsonable(value: Any) -> JsonValue:
         return value
     if isinstance(value, Decimal):
         return float(value)
+    if isinstance(value, bytes):
+        return base64.b64encode(value).decode("ascii")
     if isinstance(value, Path):
         return str(value)
     if isinstance(value, datetime | date):

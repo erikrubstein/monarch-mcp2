@@ -46,6 +46,9 @@ Implemented tools:
 - `categories_update_category_group`
 - `categories_delete_category_group`
 - `categories_reorder_category_group`
+- `cashflow_get_cashflow_summary`
+- `cashflow_get_cashflow_trends`
+- `cashflow_get_cashflow_breakdown`
 
 Planned groups follow the `monarch-api2` surface: accounts, transactions,
 receipts, cashflow, reports, merchants, tags, household, categories, recurring,
