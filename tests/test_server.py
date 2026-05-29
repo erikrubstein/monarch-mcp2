@@ -76,5 +76,11 @@ async def test_server_registers_auth_group() -> None:
         "investments_create_manual_holding",
         "investments_update_manual_holding",
         "investments_delete_manual_holding",
+        "reports_get_report_data",
+        "reports_list_saved_reports",
+        "reports_get_saved_report",
+        "reports_create_saved_report",
+        "reports_update_saved_report",
+        "reports_delete_saved_report",
     }
     assert {str(resource.uri) for resource in resources} == set()

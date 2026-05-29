@@ -11,6 +11,7 @@ from monarch_mcp.groups import (
     investments,
     merchants,
     recurring,
+    reports,
     tags,
 )
 
@@ -26,6 +27,7 @@ def create_mcp() -> FastMCP:
     household.register(mcp)
     recurring.register(mcp)
     investments.register(mcp)
+    reports.register(mcp)
     return mcp
 
 

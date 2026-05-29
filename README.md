@@ -77,6 +77,12 @@ Implemented tools:
 - `investments_create_manual_holding`
 - `investments_update_manual_holding`
 - `investments_delete_manual_holding`
+- `reports_get_report_data`
+- `reports_list_saved_reports`
+- `reports_get_saved_report`
+- `reports_create_saved_report`
+- `reports_update_saved_report`
+- `reports_delete_saved_report`
 
 Planned groups follow the `monarch-api2` surface: accounts, transactions,
 receipts, cashflow, reports, merchants, tags, household, categories, recurring,
