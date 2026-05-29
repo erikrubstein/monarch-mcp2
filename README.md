@@ -1,0 +1,74 @@
+# monarch-mcp2
+
+Unofficial MCP server for Monarch Money, backed directly by
+[`monarch-api2`](https://github.com/erikrubstein/monarch-api2).
+
+This project is not affiliated with, endorsed by, or supported by Monarch Money.
+
+## Design
+
+`monarch-mcp2` mirrors the API package by product group. MCP tools map to
+`monarch-api2` functions using `{group}_{function_name}` names, while shared
+configuration, session loading, serialization, and server startup live in common
+modules.
+
+Implemented tools:
+
+- `auth_create_session`
+- `auth_save_session`
+- `auth_load_session`
+
+Planned groups follow the `monarch-api2` surface: accounts, transactions,
+receipts, cashflow, reports, merchants, tags, household, categories, recurring,
+investments, goals, and budget.
+
+## Installation
+
+From a local checkout:
+
+```bash
+python3 -m venv .venv
+.venv/bin/pip install -e .
+```
+
+For local sibling development against an editable `monarch-api2` checkout:
+
+```bash
+.venv/bin/pip install -e ../monarch-api2
+```
+
+## Usage
+
+Run the MCP server over stdio:
+
+```bash
+monarch-mcp
+```
+
+The default session file is:
+
+```text
+~/.config/monarch/session.json
+```
+
+You can override it with `MONARCH_SESSION_PATH`, or set `MONARCH_CONFIG_DIR` to
+change the config directory.
+
+Example local MCP client configuration:
+
+```json
+{
+  "mcpServers": {
+    "monarch": {
+      "command": "/absolute/path/to/monarch-mcp2/.venv/bin/monarch-mcp"
+    }
+  }
+}
+```
+
+## Security
+
+This server works with sensitive personal finance data. Treat saved session
+files like passwords, and avoid exposing this MCP server to untrusted clients.
+Auth tools return AuthSession-shaped objects, but redact `token` by default. Set
+`include_token=true` only when a caller explicitly needs the raw bearer token.

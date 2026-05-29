@@ -1,0 +1,26 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "monarch-mcp2"
+version = "0.1.0"
+description = "MCP server for Monarch Money backed by monarch-api2."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "mcp[cli]>=1.27,<2",
+  "monarch-api2 @ git+https://github.com/erikrubstein/monarch-api2.git@v0.1.0",
+]
+
+[project.scripts]
+monarch-mcp = "monarch_mcp.server:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/monarch_mcp"]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
