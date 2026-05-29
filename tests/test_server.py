@@ -129,5 +129,14 @@ async def test_server_registers_auth_group() -> None:
         "transactions_upload_transaction_attachment",
         "transactions_download_transaction_attachment",
         "transactions_delete_transaction_attachment",
+        "receipts_list_receipts",
+        "receipts_get_receipt",
+        "receipts_upload_receipt",
+        "receipts_delete_receipt",
+        "receipts_match_receipt",
+        "receipts_unmatch_receipt",
+        "receipts_update_receipt",
+        "receipts_get_receipt_settings",
+        "receipts_update_receipt_settings",
     }
     assert {str(resource.uri) for resource in resources} == set()

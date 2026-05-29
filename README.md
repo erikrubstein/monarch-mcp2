@@ -130,6 +130,15 @@ Implemented tools:
 - `transactions_upload_transaction_attachment`
 - `transactions_download_transaction_attachment`
 - `transactions_delete_transaction_attachment`
+- `receipts_list_receipts`
+- `receipts_get_receipt`
+- `receipts_upload_receipt`
+- `receipts_delete_receipt`
+- `receipts_match_receipt`
+- `receipts_unmatch_receipt`
+- `receipts_update_receipt`
+- `receipts_get_receipt_settings`
+- `receipts_update_receipt_settings`
 
 Planned groups follow the `monarch-api2` surface: accounts, transactions,
 receipts, cashflow, reports, merchants, tags, household, categories, recurring,
