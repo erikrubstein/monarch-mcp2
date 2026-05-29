@@ -32,6 +32,20 @@ Implemented tools:
 - `tags_update_tag`
 - `tags_delete_tag`
 - `tags_reorder_tag`
+- `categories_list_categories`
+- `categories_list_category_groups`
+- `categories_get_category_catalog`
+- `categories_get_category_group`
+- `categories_get_category`
+- `categories_create_category`
+- `categories_update_category`
+- `categories_remove_category`
+- `categories_reactivate_category`
+- `categories_reorder_category`
+- `categories_create_category_group`
+- `categories_update_category_group`
+- `categories_delete_category_group`
+- `categories_reorder_category_group`
 
 Planned groups follow the `monarch-api2` surface: accounts, transactions,
 receipts, cashflow, reports, merchants, tags, household, categories, recurring,

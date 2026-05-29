@@ -1,0 +1,235 @@
+from __future__ import annotations
+
+from typing import Any
+
+from mcp.server.fastmcp import FastMCP
+from monarch_api import (
+    CategoryFilter,
+    CategoryType,
+    create_category as api_create_category,
+    create_category_group as api_create_category_group,
+    delete_category_group as api_delete_category_group,
+    get_category as api_get_category,
+    get_category_catalog as api_get_category_catalog,
+    get_category_group as api_get_category_group,
+    list_categories as api_list_categories,
+    list_category_groups as api_list_category_groups,
+    reactivate_category as api_reactivate_category,
+    remove_category as api_remove_category,
+    reorder_category as api_reorder_category,
+    reorder_category_group as api_reorder_category_group,
+    update_category as api_update_category,
+    update_category_group as api_update_category_group,
+)
+
+from monarch_mcp.serialization import to_jsonable
+from monarch_mcp.session import require_session
+
+
+def category_type_from_str(value: str | None) -> CategoryType | None:
+    if value is None:
+        return None
+    return CategoryType(value)
+
+
+def category_filter_from_dict(filters: dict[str, Any] | None) -> CategoryFilter | None:
+    if filters is None:
+        return None
+    types = filters.get("types")
+    return CategoryFilter(
+        group_ids=filters.get("group_ids"),
+        types=[CategoryType(type_) for type_ in types] if types is not None else None,
+    )
+
+
+def list_categories(
+    *,
+    filters: dict[str, Any] | None = None,
+    include_disabled: bool = False,
+    session_path: str | None = None,
+) -> Any:
+    return to_jsonable(
+        api_list_categories(
+            require_session(session_path),
+            filters=category_filter_from_dict(filters),
+            include_disabled=include_disabled,
+        )
+    )
+
+
+def list_category_groups(*, session_path: str | None = None) -> Any:
+    return to_jsonable(api_list_category_groups(require_session(session_path)))
+
+
+def get_category_catalog(
+    *,
+    include_disabled: bool = False,
+    session_path: str | None = None,
+) -> Any:
+    return to_jsonable(
+        api_get_category_catalog(
+            require_session(session_path),
+            include_disabled=include_disabled,
+        )
+    )
+
+
+def get_category_group(group_id: str, *, session_path: str | None = None) -> Any:
+    return to_jsonable(api_get_category_group(require_session(session_path), group_id))
+
+
+def get_category(category_id: str, *, session_path: str | None = None) -> Any:
+    return to_jsonable(api_get_category(require_session(session_path), category_id))
+
+
+def create_category(
+    *,
+    name: str,
+    group_id: str,
+    icon: str,
+    session_path: str | None = None,
+) -> Any:
+    return to_jsonable(
+        api_create_category(
+            require_session(session_path),
+            name=name,
+            group_id=group_id,
+            icon=icon,
+        )
+    )
+
+
+def update_category(
+    category_id: str,
+    *,
+    name: str | None = None,
+    group_id: str | None = None,
+    icon: str | None = None,
+    session_path: str | None = None,
+) -> Any:
+    return to_jsonable(
+        api_update_category(
+            require_session(session_path),
+            category_id,
+            name=name,
+            group_id=group_id,
+            icon=icon,
+        )
+    )
+
+
+def remove_category(
+    category_id: str,
+    *,
+    move_to_category_id: str | None = None,
+    session_path: str | None = None,
+) -> Any:
+    return to_jsonable(
+        api_remove_category(
+            require_session(session_path),
+            category_id,
+            move_to_category_id=move_to_category_id,
+        )
+    )
+
+
+def reactivate_category(category_id: str, *, session_path: str | None = None) -> Any:
+    return to_jsonable(
+        api_reactivate_category(require_session(session_path), category_id)
+    )
+
+
+def reorder_category(
+    category_id: str,
+    *,
+    group_id: str,
+    order: int,
+    session_path: str | None = None,
+) -> Any:
+    return to_jsonable(
+        api_reorder_category(
+            require_session(session_path),
+            category_id,
+            group_id=group_id,
+            order=order,
+        )
+    )
+
+
+def create_category_group(
+    *,
+    name: str,
+    type: str,
+    session_path: str | None = None,
+) -> Any:
+    return to_jsonable(
+        api_create_category_group(
+            require_session(session_path),
+            name=name,
+            type=CategoryType(type),
+        )
+    )
+
+
+def update_category_group(
+    group_id: str,
+    *,
+    name: str | None = None,
+    type: str | None = None,
+    session_path: str | None = None,
+) -> Any:
+    return to_jsonable(
+        api_update_category_group(
+            require_session(session_path),
+            group_id,
+            name=name,
+            type=category_type_from_str(type),
+        )
+    )
+
+
+def delete_category_group(
+    group_id: str,
+    *,
+    move_to_group_id: str | None = None,
+    session_path: str | None = None,
+) -> Any:
+    return to_jsonable(
+        api_delete_category_group(
+            require_session(session_path),
+            group_id,
+            move_to_group_id=move_to_group_id,
+        )
+    )
+
+
+def reorder_category_group(
+    group_id: str,
+    *,
+    order: int,
+    session_path: str | None = None,
+) -> Any:
+    return to_jsonable(
+        api_reorder_category_group(
+            require_session(session_path),
+            group_id,
+            order=order,
+        )
+    )
+
+
+def register(mcp: FastMCP) -> None:
+    mcp.tool(name="categories_list_categories")(list_categories)
+    mcp.tool(name="categories_list_category_groups")(list_category_groups)
+    mcp.tool(name="categories_get_category_catalog")(get_category_catalog)
+    mcp.tool(name="categories_get_category_group")(get_category_group)
+    mcp.tool(name="categories_get_category")(get_category)
+    mcp.tool(name="categories_create_category")(create_category)
+    mcp.tool(name="categories_update_category")(update_category)
+    mcp.tool(name="categories_remove_category")(remove_category)
+    mcp.tool(name="categories_reactivate_category")(reactivate_category)
+    mcp.tool(name="categories_reorder_category")(reorder_category)
+    mcp.tool(name="categories_create_category_group")(create_category_group)
+    mcp.tool(name="categories_update_category_group")(update_category_group)
+    mcp.tool(name="categories_delete_category_group")(delete_category_group)
+    mcp.tool(name="categories_reorder_category_group")(reorder_category_group)
