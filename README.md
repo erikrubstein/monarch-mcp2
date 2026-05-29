@@ -117,6 +117,19 @@ Implemented tools:
 - `budget_create_budget`
 - `budget_reset_budget`
 - `budget_clear_budget`
+- `transactions_list_transactions`
+- `transactions_get_transaction`
+- `transactions_create_transaction`
+- `transactions_update_transaction`
+- `transactions_delete_transaction`
+- `transactions_get_transaction_splits`
+- `transactions_update_transaction_splits`
+- `transactions_unsplit_transaction`
+- `transactions_list_transaction_attachments`
+- `transactions_get_transaction_attachment`
+- `transactions_upload_transaction_attachment`
+- `transactions_download_transaction_attachment`
+- `transactions_delete_transaction_attachment`
 
 Planned groups follow the `monarch-api2` surface: accounts, transactions,
 receipts, cashflow, reports, merchants, tags, household, categories, recurring,

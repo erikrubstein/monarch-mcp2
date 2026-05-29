@@ -116,5 +116,18 @@ async def test_server_registers_auth_group() -> None:
         "budget_create_budget",
         "budget_reset_budget",
         "budget_clear_budget",
+        "transactions_list_transactions",
+        "transactions_get_transaction",
+        "transactions_create_transaction",
+        "transactions_update_transaction",
+        "transactions_delete_transaction",
+        "transactions_get_transaction_splits",
+        "transactions_update_transaction_splits",
+        "transactions_unsplit_transaction",
+        "transactions_list_transaction_attachments",
+        "transactions_get_transaction_attachment",
+        "transactions_upload_transaction_attachment",
+        "transactions_download_transaction_attachment",
+        "transactions_delete_transaction_attachment",
     }
     assert {str(resource.uri) for resource in resources} == set()
