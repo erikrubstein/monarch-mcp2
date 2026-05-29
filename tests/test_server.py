@@ -25,5 +25,11 @@ async def test_server_registers_auth_group() -> None:
         "accounts_create_manual_account",
         "accounts_update_account",
         "accounts_delete_account",
+        "tags_list_tags",
+        "tags_get_tag",
+        "tags_create_tag",
+        "tags_update_tag",
+        "tags_delete_tag",
+        "tags_reorder_tag",
     }
     assert {str(resource.uri) for resource in resources} == set()

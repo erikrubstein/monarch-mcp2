@@ -26,6 +26,12 @@ Implemented tools:
 - `accounts_create_manual_account`
 - `accounts_update_account`
 - `accounts_delete_account`
+- `tags_list_tags`
+- `tags_get_tag`
+- `tags_create_tag`
+- `tags_update_tag`
+- `tags_delete_tag`
+- `tags_reorder_tag`
 
 Planned groups follow the `monarch-api2` surface: accounts, transactions,
 receipts, cashflow, reports, merchants, tags, household, categories, recurring,

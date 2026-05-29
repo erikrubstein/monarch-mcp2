@@ -2,13 +2,14 @@ from __future__ import annotations
 
 from mcp.server.fastmcp import FastMCP
 
-from monarch_mcp.groups import accounts, auth
+from monarch_mcp.groups import accounts, auth, tags
 
 
 def create_mcp() -> FastMCP:
     mcp = FastMCP("monarch")
     auth.register(mcp)
     accounts.register(mcp)
+    tags.register(mcp)
     return mcp
 
 
