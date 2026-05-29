@@ -24,6 +24,7 @@ from monarch_api import (
 
 from monarch_mcp.serialization import to_jsonable
 from monarch_mcp.session import require_session
+from monarch_mcp.tool_metadata import register_api_tool
 
 
 def category_type_from_str(value: str | None) -> CategoryType | None:
@@ -219,17 +220,47 @@ def reorder_category_group(
 
 
 def register(mcp: FastMCP) -> None:
-    mcp.tool(name="categories_list_categories")(list_categories)
-    mcp.tool(name="categories_list_category_groups")(list_category_groups)
-    mcp.tool(name="categories_get_category_catalog")(get_category_catalog)
-    mcp.tool(name="categories_get_category_group")(get_category_group)
-    mcp.tool(name="categories_get_category")(get_category)
-    mcp.tool(name="categories_create_category")(create_category)
-    mcp.tool(name="categories_update_category")(update_category)
-    mcp.tool(name="categories_remove_category")(remove_category)
-    mcp.tool(name="categories_reactivate_category")(reactivate_category)
-    mcp.tool(name="categories_reorder_category")(reorder_category)
-    mcp.tool(name="categories_create_category_group")(create_category_group)
-    mcp.tool(name="categories_update_category_group")(update_category_group)
-    mcp.tool(name="categories_delete_category_group")(delete_category_group)
-    mcp.tool(name="categories_reorder_category_group")(reorder_category_group)
+    register_api_tool(mcp, "categories", "list_categories", list_categories)
+    register_api_tool(
+        mcp,
+        "categories",
+        "list_category_groups",
+        list_category_groups,
+    )
+    register_api_tool(
+        mcp,
+        "categories",
+        "get_category_catalog",
+        get_category_catalog,
+    )
+    register_api_tool(mcp, "categories", "get_category_group", get_category_group)
+    register_api_tool(mcp, "categories", "get_category", get_category)
+    register_api_tool(mcp, "categories", "create_category", create_category)
+    register_api_tool(mcp, "categories", "update_category", update_category)
+    register_api_tool(mcp, "categories", "remove_category", remove_category)
+    register_api_tool(mcp, "categories", "reactivate_category", reactivate_category)
+    register_api_tool(mcp, "categories", "reorder_category", reorder_category)
+    register_api_tool(
+        mcp,
+        "categories",
+        "create_category_group",
+        create_category_group,
+    )
+    register_api_tool(
+        mcp,
+        "categories",
+        "update_category_group",
+        update_category_group,
+    )
+    register_api_tool(
+        mcp,
+        "categories",
+        "delete_category_group",
+        delete_category_group,
+    )
+    register_api_tool(
+        mcp,
+        "categories",
+        "reorder_category_group",
+        reorder_category_group,
+    )

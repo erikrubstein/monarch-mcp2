@@ -140,3 +140,20 @@ async def test_server_registers_auth_group() -> None:
         "receipts_update_receipt_settings",
     }
     assert {str(resource.uri) for resource in resources} == set()
+
+
+@pytest.mark.anyio
+async def test_server_registers_tool_metadata() -> None:
+    mcp = create_mcp()
+
+    tools = await mcp.list_tools()
+
+    assert all(tool.description for tool in tools)
+    assert all(tool.annotations for tool in tools)
+
+    by_name = {tool.name: tool for tool in tools}
+    assert by_name["accounts_list_accounts"].annotations.readOnlyHint is True
+    assert by_name["auth_load_session"].annotations.readOnlyHint is True
+    assert by_name["transactions_delete_transaction"].annotations.destructiveHint is True
+    assert by_name["budget_clear_budget"].annotations.destructiveHint is True
+    assert by_name["transactions_update_transaction"].annotations.readOnlyHint is False

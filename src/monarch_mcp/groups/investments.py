@@ -18,6 +18,7 @@ from monarch_api import (
 
 from monarch_mcp.serialization import to_jsonable
 from monarch_mcp.session import require_session
+from monarch_mcp.tool_metadata import register_api_tool
 
 
 def list_investment_accounts(*, session_path: str | None = None) -> Any:
@@ -151,13 +152,38 @@ def delete_manual_holding(
 
 
 def register(mcp: FastMCP) -> None:
-    mcp.tool(name="investments_list_investment_accounts")(list_investment_accounts)
-    mcp.tool(name="investments_list_holdings")(list_holdings)
-    mcp.tool(name="investments_get_holding")(get_holding)
-    mcp.tool(name="investments_get_holding_performance")(get_holding_performance)
-    mcp.tool(name="investments_get_portfolio")(get_portfolio)
-    mcp.tool(name="investments_get_security")(get_security)
-    mcp.tool(name="investments_search_securities")(search_securities)
-    mcp.tool(name="investments_create_manual_holding")(create_manual_holding)
-    mcp.tool(name="investments_update_manual_holding")(update_manual_holding)
-    mcp.tool(name="investments_delete_manual_holding")(delete_manual_holding)
+    register_api_tool(
+        mcp,
+        "investments",
+        "list_investment_accounts",
+        list_investment_accounts,
+    )
+    register_api_tool(mcp, "investments", "list_holdings", list_holdings)
+    register_api_tool(mcp, "investments", "get_holding", get_holding)
+    register_api_tool(
+        mcp,
+        "investments",
+        "get_holding_performance",
+        get_holding_performance,
+    )
+    register_api_tool(mcp, "investments", "get_portfolio", get_portfolio)
+    register_api_tool(mcp, "investments", "get_security", get_security)
+    register_api_tool(mcp, "investments", "search_securities", search_securities)
+    register_api_tool(
+        mcp,
+        "investments",
+        "create_manual_holding",
+        create_manual_holding,
+    )
+    register_api_tool(
+        mcp,
+        "investments",
+        "update_manual_holding",
+        update_manual_holding,
+    )
+    register_api_tool(
+        mcp,
+        "investments",
+        "delete_manual_holding",
+        delete_manual_holding,
+    )

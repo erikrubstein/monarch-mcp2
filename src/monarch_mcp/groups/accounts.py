@@ -18,6 +18,7 @@ from monarch_api import (
 
 from monarch_mcp.serialization import to_jsonable
 from monarch_mcp.session import require_session
+from monarch_mcp.tool_metadata import register_api_tool
 
 
 def account_filter_from_dict(filters: dict[str, Any] | None) -> AccountFilter | None:
@@ -164,12 +165,27 @@ def delete_account(account_id: str, *, session_path: str | None = None) -> Any:
 
 
 def register(mcp: FastMCP) -> None:
-    mcp.tool(name="accounts_list_accounts")(list_accounts)
-    mcp.tool(name="accounts_get_account")(get_account)
-    mcp.tool(name="accounts_get_net_worth_performance")(get_net_worth_performance)
-    mcp.tool(name="accounts_get_net_worth_breakdown")(get_net_worth_breakdown)
-    mcp.tool(name="accounts_get_historical_balances")(get_historical_balances)
-    mcp.tool(name="accounts_get_account_history")(get_account_history)
-    mcp.tool(name="accounts_create_manual_account")(create_manual_account)
-    mcp.tool(name="accounts_update_account")(update_account)
-    mcp.tool(name="accounts_delete_account")(delete_account)
+    register_api_tool(mcp, "accounts", "list_accounts", list_accounts)
+    register_api_tool(mcp, "accounts", "get_account", get_account)
+    register_api_tool(
+        mcp,
+        "accounts",
+        "get_net_worth_performance",
+        get_net_worth_performance,
+    )
+    register_api_tool(
+        mcp,
+        "accounts",
+        "get_net_worth_breakdown",
+        get_net_worth_breakdown,
+    )
+    register_api_tool(
+        mcp,
+        "accounts",
+        "get_historical_balances",
+        get_historical_balances,
+    )
+    register_api_tool(mcp, "accounts", "get_account_history", get_account_history)
+    register_api_tool(mcp, "accounts", "create_manual_account", create_manual_account)
+    register_api_tool(mcp, "accounts", "update_account", update_account)
+    register_api_tool(mcp, "accounts", "delete_account", delete_account)

@@ -25,6 +25,7 @@ from monarch_api import (
 
 from monarch_mcp.serialization import to_jsonable
 from monarch_mcp.session import require_session
+from monarch_mcp.tool_metadata import register_api_tool
 
 
 def get_budget(month: str, *, session_path: str | None = None) -> Any:
@@ -273,22 +274,55 @@ def clear_budget(
 
 
 def register(mcp: FastMCP) -> None:
-    mcp.tool(name="budget_get_budget")(get_budget)
-    mcp.tool(name="budget_list_budget_months")(list_budget_months)
-    mcp.tool(name="budget_get_budget_settings")(get_budget_settings)
-    mcp.tool(name="budget_get_budget_category")(get_budget_category)
-    mcp.tool(name="budget_get_flex_rollover_settings")(get_flex_rollover_settings)
-    mcp.tool(name="budget_set_budget_amount")(set_budget_amount)
-    mcp.tool(name="budget_set_budget_group_amount")(set_budget_group_amount)
-    mcp.tool(name="budget_set_flex_budget_amount")(set_flex_budget_amount)
-    mcp.tool(name="budget_set_budget_category_variability")(
-        set_budget_category_variability
+    register_api_tool(mcp, "budget", "get_budget", get_budget)
+    register_api_tool(mcp, "budget", "list_budget_months", list_budget_months)
+    register_api_tool(mcp, "budget", "get_budget_settings", get_budget_settings)
+    register_api_tool(mcp, "budget", "get_budget_category", get_budget_category)
+    register_api_tool(
+        mcp,
+        "budget",
+        "get_flex_rollover_settings",
+        get_flex_rollover_settings,
     )
-    mcp.tool(name="budget_set_budget_group_variability")(set_budget_group_variability)
-    mcp.tool(name="budget_set_budget_category_rollover")(set_budget_category_rollover)
-    mcp.tool(name="budget_set_budget_group_rollover")(set_budget_group_rollover)
-    mcp.tool(name="budget_set_flex_rollover_settings")(set_flex_rollover_settings)
-    mcp.tool(name="budget_reset_budget_rollover")(reset_budget_rollover)
-    mcp.tool(name="budget_create_budget")(create_budget)
-    mcp.tool(name="budget_reset_budget")(reset_budget)
-    mcp.tool(name="budget_clear_budget")(clear_budget)
+    register_api_tool(mcp, "budget", "set_budget_amount", set_budget_amount)
+    register_api_tool(
+        mcp,
+        "budget",
+        "set_budget_group_amount",
+        set_budget_group_amount,
+    )
+    register_api_tool(mcp, "budget", "set_flex_budget_amount", set_flex_budget_amount)
+    register_api_tool(
+        mcp,
+        "budget",
+        "set_budget_category_variability",
+        set_budget_category_variability,
+    )
+    register_api_tool(
+        mcp,
+        "budget",
+        "set_budget_group_variability",
+        set_budget_group_variability,
+    )
+    register_api_tool(
+        mcp,
+        "budget",
+        "set_budget_category_rollover",
+        set_budget_category_rollover,
+    )
+    register_api_tool(
+        mcp,
+        "budget",
+        "set_budget_group_rollover",
+        set_budget_group_rollover,
+    )
+    register_api_tool(
+        mcp,
+        "budget",
+        "set_flex_rollover_settings",
+        set_flex_rollover_settings,
+    )
+    register_api_tool(mcp, "budget", "reset_budget_rollover", reset_budget_rollover)
+    register_api_tool(mcp, "budget", "create_budget", create_budget)
+    register_api_tool(mcp, "budget", "reset_budget", reset_budget)
+    register_api_tool(mcp, "budget", "clear_budget", clear_budget)

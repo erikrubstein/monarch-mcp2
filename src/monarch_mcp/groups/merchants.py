@@ -13,6 +13,7 @@ from monarch_api import (
 
 from monarch_mcp.serialization import to_jsonable
 from monarch_mcp.session import require_session
+from monarch_mcp.tool_metadata import register_api_tool
 
 
 def list_merchants(
@@ -65,7 +66,7 @@ def delete_merchant(
 
 
 def register(mcp: FastMCP) -> None:
-    mcp.tool(name="merchants_list_merchants")(list_merchants)
-    mcp.tool(name="merchants_get_merchant")(get_merchant)
-    mcp.tool(name="merchants_update_merchant")(update_merchant)
-    mcp.tool(name="merchants_delete_merchant")(delete_merchant)
+    register_api_tool(mcp, "merchants", "list_merchants", list_merchants)
+    register_api_tool(mcp, "merchants", "get_merchant", get_merchant)
+    register_api_tool(mcp, "merchants", "update_merchant", update_merchant)
+    register_api_tool(mcp, "merchants", "delete_merchant", delete_merchant)

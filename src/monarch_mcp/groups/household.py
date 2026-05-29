@@ -15,6 +15,7 @@ from monarch_api import (
 
 from monarch_mcp.serialization import to_jsonable
 from monarch_mcp.session import require_session
+from monarch_mcp.tool_metadata import register_api_tool
 
 
 def get_current_user(*, session_path: str | None = None) -> Any:
@@ -76,10 +77,30 @@ def update_household_preferences(
 
 
 def register(mcp: FastMCP) -> None:
-    mcp.tool(name="household_get_current_user")(get_current_user)
-    mcp.tool(name="household_get_household")(get_household)
-    mcp.tool(name="household_get_household_member")(get_household_member)
-    mcp.tool(name="household_get_household_preferences")(get_household_preferences)
-    mcp.tool(name="household_list_household_members")(list_household_members)
-    mcp.tool(name="household_update_current_user")(update_current_user)
-    mcp.tool(name="household_update_household_preferences")(update_household_preferences)
+    register_api_tool(mcp, "household", "get_current_user", get_current_user)
+    register_api_tool(mcp, "household", "get_household", get_household)
+    register_api_tool(
+        mcp,
+        "household",
+        "get_household_member",
+        get_household_member,
+    )
+    register_api_tool(
+        mcp,
+        "household",
+        "get_household_preferences",
+        get_household_preferences,
+    )
+    register_api_tool(
+        mcp,
+        "household",
+        "list_household_members",
+        list_household_members,
+    )
+    register_api_tool(mcp, "household", "update_current_user", update_current_user)
+    register_api_tool(
+        mcp,
+        "household",
+        "update_household_preferences",
+        update_household_preferences,
+    )

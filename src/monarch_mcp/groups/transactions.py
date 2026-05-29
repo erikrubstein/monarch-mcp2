@@ -27,6 +27,7 @@ from monarch_mcp.converters import (
 )
 from monarch_mcp.serialization import to_jsonable
 from monarch_mcp.session import require_session
+from monarch_mcp.tool_metadata import register_api_tool
 
 
 def list_transactions(
@@ -254,24 +255,51 @@ def delete_transaction_attachment(
 
 
 def register(mcp: FastMCP) -> None:
-    mcp.tool(name="transactions_list_transactions")(list_transactions)
-    mcp.tool(name="transactions_get_transaction")(get_transaction)
-    mcp.tool(name="transactions_create_transaction")(create_transaction)
-    mcp.tool(name="transactions_update_transaction")(update_transaction)
-    mcp.tool(name="transactions_delete_transaction")(delete_transaction)
-    mcp.tool(name="transactions_get_transaction_splits")(get_transaction_splits)
-    mcp.tool(name="transactions_update_transaction_splits")(update_transaction_splits)
-    mcp.tool(name="transactions_unsplit_transaction")(unsplit_transaction)
-    mcp.tool(name="transactions_list_transaction_attachments")(
-        list_transaction_attachments
+    register_api_tool(mcp, "transactions", "list_transactions", list_transactions)
+    register_api_tool(mcp, "transactions", "get_transaction", get_transaction)
+    register_api_tool(mcp, "transactions", "create_transaction", create_transaction)
+    register_api_tool(mcp, "transactions", "update_transaction", update_transaction)
+    register_api_tool(mcp, "transactions", "delete_transaction", delete_transaction)
+    register_api_tool(
+        mcp,
+        "transactions",
+        "get_transaction_splits",
+        get_transaction_splits,
     )
-    mcp.tool(name="transactions_get_transaction_attachment")(get_transaction_attachment)
-    mcp.tool(name="transactions_upload_transaction_attachment")(
-        upload_transaction_attachment
+    register_api_tool(
+        mcp,
+        "transactions",
+        "update_transaction_splits",
+        update_transaction_splits,
     )
-    mcp.tool(name="transactions_download_transaction_attachment")(
-        download_transaction_attachment
+    register_api_tool(mcp, "transactions", "unsplit_transaction", unsplit_transaction)
+    register_api_tool(
+        mcp,
+        "transactions",
+        "list_transaction_attachments",
+        list_transaction_attachments,
     )
-    mcp.tool(name="transactions_delete_transaction_attachment")(
-        delete_transaction_attachment
+    register_api_tool(
+        mcp,
+        "transactions",
+        "get_transaction_attachment",
+        get_transaction_attachment,
+    )
+    register_api_tool(
+        mcp,
+        "transactions",
+        "upload_transaction_attachment",
+        upload_transaction_attachment,
+    )
+    register_api_tool(
+        mcp,
+        "transactions",
+        "download_transaction_attachment",
+        download_transaction_attachment,
+    )
+    register_api_tool(
+        mcp,
+        "transactions",
+        "delete_transaction_attachment",
+        delete_transaction_attachment,
     )

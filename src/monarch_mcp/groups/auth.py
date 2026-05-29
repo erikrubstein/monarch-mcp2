@@ -11,6 +11,7 @@ from monarch_api import save_session as api_save_session
 
 from monarch_mcp.config import resolve_session_path
 from monarch_mcp.serialization import to_jsonable
+from monarch_mcp.tool_metadata import register_api_tool
 
 
 REDACTED_TOKEN = "<redacted>"
@@ -61,59 +62,6 @@ def load_session(path: str, *, include_token: bool = False) -> dict[str, Any]:
 
 
 def register(mcp: FastMCP) -> None:
-    @mcp.tool(name="auth_create_session")
-    def auth_create_session(
-        email: str,
-        password: str,
-        mfa_code: str | None = None,
-        trusted_device: bool = True,
-        session_path: str | None = None,
-        include_token: bool = False,
-    ) -> dict[str, Any]:
-        """Create a Monarch auth session.
-
-        Maps to `monarch_api.create_session`. By default the returned
-        AuthSession-shaped object redacts `token`; set `include_token` only when
-        the caller explicitly needs the raw bearer token.
-
-        Args:
-            email: Monarch account email address.
-            password: Monarch account password.
-            mfa_code: Multi-factor authentication code, if required.
-            trusted_device: Ask Monarch to remember this device.
-            session_path: Optional path for the saved session file.
-            include_token: Include the raw bearer token in the returned session.
-        """
-        return create_session(
-            email,
-            password,
-            mfa_code=mfa_code,
-            trusted_device=trusted_device,
-            session_path=session_path,
-            include_token=include_token,
-        )
-
-    @mcp.tool(name="auth_save_session")
-    def auth_save_session(session: dict[str, Any], path: str) -> None:
-        """Save a Monarch auth session to disk.
-
-        Args:
-            session: AuthSession-shaped object containing token,
-                token_expiration, user_id, and email.
-            path: Destination session file path.
-        """
-        return save_session(session, path)
-
-    @mcp.tool(name="auth_load_session")
-    def auth_load_session(path: str, include_token: bool = False) -> dict[str, Any]:
-        """Load a Monarch auth session from disk.
-
-        Maps to `monarch_api.load_session`. By default the returned
-        AuthSession-shaped object redacts `token`; set `include_token` only when
-        the caller explicitly needs the raw bearer token.
-
-        Args:
-            path: Session file path.
-            include_token: Include the raw bearer token in the returned session.
-        """
-        return load_session(path, include_token=include_token)
+    register_api_tool(mcp, "auth", "create_session", create_session)
+    register_api_tool(mcp, "auth", "save_session", save_session)
+    register_api_tool(mcp, "auth", "load_session", load_session)

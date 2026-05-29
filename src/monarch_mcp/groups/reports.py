@@ -20,6 +20,7 @@ from monarch_mcp.converters import (
 )
 from monarch_mcp.serialization import to_jsonable
 from monarch_mcp.session import require_session
+from monarch_mcp.tool_metadata import register_api_tool
 
 
 def get_report_data(
@@ -88,9 +89,9 @@ def delete_saved_report(report_id: str, *, session_path: str | None = None) -> A
 
 
 def register(mcp: FastMCP) -> None:
-    mcp.tool(name="reports_get_report_data")(get_report_data)
-    mcp.tool(name="reports_list_saved_reports")(list_saved_reports)
-    mcp.tool(name="reports_get_saved_report")(get_saved_report)
-    mcp.tool(name="reports_create_saved_report")(create_saved_report)
-    mcp.tool(name="reports_update_saved_report")(update_saved_report)
-    mcp.tool(name="reports_delete_saved_report")(delete_saved_report)
+    register_api_tool(mcp, "reports", "get_report_data", get_report_data)
+    register_api_tool(mcp, "reports", "list_saved_reports", list_saved_reports)
+    register_api_tool(mcp, "reports", "get_saved_report", get_saved_report)
+    register_api_tool(mcp, "reports", "create_saved_report", create_saved_report)
+    register_api_tool(mcp, "reports", "update_saved_report", update_saved_report)
+    register_api_tool(mcp, "reports", "delete_saved_report", delete_saved_report)

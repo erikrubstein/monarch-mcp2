@@ -15,6 +15,7 @@ from monarch_api import (
 from monarch_mcp.converters import cashflow_filter
 from monarch_mcp.serialization import to_jsonable
 from monarch_mcp.session import require_session
+from monarch_mcp.tool_metadata import register_api_tool
 
 
 def get_cashflow_summary(
@@ -75,6 +76,11 @@ def get_cashflow_breakdown(
 
 
 def register(mcp: FastMCP) -> None:
-    mcp.tool(name="cashflow_get_cashflow_summary")(get_cashflow_summary)
-    mcp.tool(name="cashflow_get_cashflow_trends")(get_cashflow_trends)
-    mcp.tool(name="cashflow_get_cashflow_breakdown")(get_cashflow_breakdown)
+    register_api_tool(mcp, "cashflow", "get_cashflow_summary", get_cashflow_summary)
+    register_api_tool(mcp, "cashflow", "get_cashflow_trends", get_cashflow_trends)
+    register_api_tool(
+        mcp,
+        "cashflow",
+        "get_cashflow_breakdown",
+        get_cashflow_breakdown,
+    )

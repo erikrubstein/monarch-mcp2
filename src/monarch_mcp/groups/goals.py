@@ -25,6 +25,7 @@ from monarch_api import (
 
 from monarch_mcp.serialization import to_jsonable
 from monarch_mcp.session import require_session
+from monarch_mcp.tool_metadata import register_api_tool
 
 
 def list_goals(
@@ -270,20 +271,40 @@ def set_goal_budget_amount(
 
 
 def register(mcp: FastMCP) -> None:
-    mcp.tool(name="goals_list_goals")(list_goals)
-    mcp.tool(name="goals_get_goal")(get_goal)
-    mcp.tool(name="goals_create_goal")(create_goal)
-    mcp.tool(name="goals_update_goal")(update_goal)
-    mcp.tool(name="goals_delete_goal")(delete_goal)
-    mcp.tool(name="goals_archive_goal")(archive_goal)
-    mcp.tool(name="goals_restore_goal")(restore_goal)
-    mcp.tool(name="goals_update_goal_priorities")(update_goal_priorities)
-    mcp.tool(name="goals_link_goal_account_balance")(link_goal_account_balance)
-    mcp.tool(name="goals_unlink_goal_account")(unlink_goal_account)
-    mcp.tool(name="goals_list_goal_events")(list_goal_events)
-    mcp.tool(name="goals_contribute_to_goal")(contribute_to_goal)
-    mcp.tool(name="goals_withdraw_from_goal")(withdraw_from_goal)
-    mcp.tool(name="goals_update_goal_event")(update_goal_event)
-    mcp.tool(name="goals_delete_goal_event")(delete_goal_event)
-    mcp.tool(name="goals_get_goal_budget_amounts")(get_goal_budget_amounts)
-    mcp.tool(name="goals_set_goal_budget_amount")(set_goal_budget_amount)
+    register_api_tool(mcp, "goals", "list_goals", list_goals)
+    register_api_tool(mcp, "goals", "get_goal", get_goal)
+    register_api_tool(mcp, "goals", "create_goal", create_goal)
+    register_api_tool(mcp, "goals", "update_goal", update_goal)
+    register_api_tool(mcp, "goals", "delete_goal", delete_goal)
+    register_api_tool(mcp, "goals", "archive_goal", archive_goal)
+    register_api_tool(mcp, "goals", "restore_goal", restore_goal)
+    register_api_tool(
+        mcp,
+        "goals",
+        "update_goal_priorities",
+        update_goal_priorities,
+    )
+    register_api_tool(
+        mcp,
+        "goals",
+        "link_goal_account_balance",
+        link_goal_account_balance,
+    )
+    register_api_tool(mcp, "goals", "unlink_goal_account", unlink_goal_account)
+    register_api_tool(mcp, "goals", "list_goal_events", list_goal_events)
+    register_api_tool(mcp, "goals", "contribute_to_goal", contribute_to_goal)
+    register_api_tool(mcp, "goals", "withdraw_from_goal", withdraw_from_goal)
+    register_api_tool(mcp, "goals", "update_goal_event", update_goal_event)
+    register_api_tool(mcp, "goals", "delete_goal_event", delete_goal_event)
+    register_api_tool(
+        mcp,
+        "goals",
+        "get_goal_budget_amounts",
+        get_goal_budget_amounts,
+    )
+    register_api_tool(
+        mcp,
+        "goals",
+        "set_goal_budget_amount",
+        set_goal_budget_amount,
+    )

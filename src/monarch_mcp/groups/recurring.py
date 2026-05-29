@@ -16,6 +16,7 @@ from monarch_api import (
 from monarch_mcp.converters import recurring_filter
 from monarch_mcp.serialization import to_jsonable
 from monarch_mcp.session import require_session
+from monarch_mcp.tool_metadata import register_api_tool
 
 
 def list_recurring_streams(
@@ -139,10 +140,45 @@ def remove_recurring_stream(
 
 
 def register(mcp: FastMCP) -> None:
-    mcp.tool(name="recurring_list_recurring_streams")(list_recurring_streams)
-    mcp.tool(name="recurring_get_recurring_stream")(get_recurring_stream)
-    mcp.tool(name="recurring_list_recurring_occurrences")(list_recurring_occurrences)
-    mcp.tool(name="recurring_get_recurring_summary")(get_recurring_summary)
-    mcp.tool(name="recurring_create_recurring_stream")(create_recurring_stream)
-    mcp.tool(name="recurring_update_recurring_stream")(update_recurring_stream)
-    mcp.tool(name="recurring_remove_recurring_stream")(remove_recurring_stream)
+    register_api_tool(
+        mcp,
+        "recurring",
+        "list_recurring_streams",
+        list_recurring_streams,
+    )
+    register_api_tool(
+        mcp,
+        "recurring",
+        "get_recurring_stream",
+        get_recurring_stream,
+    )
+    register_api_tool(
+        mcp,
+        "recurring",
+        "list_recurring_occurrences",
+        list_recurring_occurrences,
+    )
+    register_api_tool(
+        mcp,
+        "recurring",
+        "get_recurring_summary",
+        get_recurring_summary,
+    )
+    register_api_tool(
+        mcp,
+        "recurring",
+        "create_recurring_stream",
+        create_recurring_stream,
+    )
+    register_api_tool(
+        mcp,
+        "recurring",
+        "update_recurring_stream",
+        update_recurring_stream,
+    )
+    register_api_tool(
+        mcp,
+        "recurring",
+        "remove_recurring_stream",
+        remove_recurring_stream,
+    )

@@ -18,6 +18,7 @@ from monarch_api import (
 from monarch_mcp.converters import receipt_filter, receipt_line_items
 from monarch_mcp.serialization import to_jsonable
 from monarch_mcp.session import require_session
+from monarch_mcp.tool_metadata import register_api_tool
 
 
 def list_receipts(
@@ -128,12 +129,22 @@ def update_receipt_settings(
 
 
 def register(mcp: FastMCP) -> None:
-    mcp.tool(name="receipts_list_receipts")(list_receipts)
-    mcp.tool(name="receipts_get_receipt")(get_receipt)
-    mcp.tool(name="receipts_upload_receipt")(upload_receipt)
-    mcp.tool(name="receipts_delete_receipt")(delete_receipt)
-    mcp.tool(name="receipts_match_receipt")(match_receipt)
-    mcp.tool(name="receipts_unmatch_receipt")(unmatch_receipt)
-    mcp.tool(name="receipts_update_receipt")(update_receipt)
-    mcp.tool(name="receipts_get_receipt_settings")(get_receipt_settings)
-    mcp.tool(name="receipts_update_receipt_settings")(update_receipt_settings)
+    register_api_tool(mcp, "receipts", "list_receipts", list_receipts)
+    register_api_tool(mcp, "receipts", "get_receipt", get_receipt)
+    register_api_tool(mcp, "receipts", "upload_receipt", upload_receipt)
+    register_api_tool(mcp, "receipts", "delete_receipt", delete_receipt)
+    register_api_tool(mcp, "receipts", "match_receipt", match_receipt)
+    register_api_tool(mcp, "receipts", "unmatch_receipt", unmatch_receipt)
+    register_api_tool(mcp, "receipts", "update_receipt", update_receipt)
+    register_api_tool(
+        mcp,
+        "receipts",
+        "get_receipt_settings",
+        get_receipt_settings,
+    )
+    register_api_tool(
+        mcp,
+        "receipts",
+        "update_receipt_settings",
+        update_receipt_settings,
+    )

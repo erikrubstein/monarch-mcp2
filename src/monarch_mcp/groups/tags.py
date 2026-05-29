@@ -14,6 +14,7 @@ from monarch_api import (
 
 from monarch_mcp.serialization import to_jsonable
 from monarch_mcp.session import require_session
+from monarch_mcp.tool_metadata import register_api_tool
 
 
 def list_tags(
@@ -89,9 +90,9 @@ def reorder_tag(
 
 
 def register(mcp: FastMCP) -> None:
-    mcp.tool(name="tags_list_tags")(list_tags)
-    mcp.tool(name="tags_get_tag")(get_tag)
-    mcp.tool(name="tags_create_tag")(create_tag)
-    mcp.tool(name="tags_update_tag")(update_tag)
-    mcp.tool(name="tags_delete_tag")(delete_tag)
-    mcp.tool(name="tags_reorder_tag")(reorder_tag)
+    register_api_tool(mcp, "tags", "list_tags", list_tags)
+    register_api_tool(mcp, "tags", "get_tag", get_tag)
+    register_api_tool(mcp, "tags", "create_tag", create_tag)
+    register_api_tool(mcp, "tags", "update_tag", update_tag)
+    register_api_tool(mcp, "tags", "delete_tag", delete_tag)
+    register_api_tool(mcp, "tags", "reorder_tag", reorder_tag)
