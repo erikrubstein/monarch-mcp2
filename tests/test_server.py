@@ -59,5 +59,12 @@ async def test_server_registers_auth_group() -> None:
         "household_list_household_members",
         "household_update_current_user",
         "household_update_household_preferences",
+        "recurring_list_recurring_streams",
+        "recurring_get_recurring_stream",
+        "recurring_list_recurring_occurrences",
+        "recurring_get_recurring_summary",
+        "recurring_create_recurring_stream",
+        "recurring_update_recurring_stream",
+        "recurring_remove_recurring_stream",
     }
     assert {str(resource.uri) for resource in resources} == set()

@@ -1,0 +1,148 @@
+from __future__ import annotations
+
+from typing import Any
+
+from mcp.server.fastmcp import FastMCP
+from monarch_api import (
+    create_recurring_stream as api_create_recurring_stream,
+    get_recurring_stream as api_get_recurring_stream,
+    get_recurring_summary as api_get_recurring_summary,
+    list_recurring_occurrences as api_list_recurring_occurrences,
+    list_recurring_streams as api_list_recurring_streams,
+    remove_recurring_stream as api_remove_recurring_stream,
+    update_recurring_stream as api_update_recurring_stream,
+)
+
+from monarch_mcp.converters import recurring_filter
+from monarch_mcp.serialization import to_jsonable
+from monarch_mcp.session import require_session
+
+
+def list_recurring_streams(
+    *,
+    filters: dict[str, Any] | None = None,
+    include_pending: bool = True,
+    include_liabilities: bool = True,
+    session_path: str | None = None,
+) -> Any:
+    return to_jsonable(
+        api_list_recurring_streams(
+            require_session(session_path),
+            filters=recurring_filter(filters),
+            include_pending=include_pending,
+            include_liabilities=include_liabilities,
+        )
+    )
+
+
+def get_recurring_stream(
+    recurring_id: str,
+    *,
+    include_liabilities: bool = True,
+    session_path: str | None = None,
+) -> Any:
+    return to_jsonable(
+        api_get_recurring_stream(
+            require_session(session_path),
+            recurring_id,
+            include_liabilities=include_liabilities,
+        )
+    )
+
+
+def list_recurring_occurrences(
+    start_date: str,
+    end_date: str,
+    *,
+    filters: dict[str, Any] | None = None,
+    include_liabilities: bool = True,
+    session_path: str | None = None,
+) -> Any:
+    return to_jsonable(
+        api_list_recurring_occurrences(
+            require_session(session_path),
+            start_date,
+            end_date,
+            filters=recurring_filter(filters),
+            include_liabilities=include_liabilities,
+        )
+    )
+
+
+def get_recurring_summary(
+    start_date: str,
+    end_date: str,
+    *,
+    filters: dict[str, Any] | None = None,
+    session_path: str | None = None,
+) -> Any:
+    return to_jsonable(
+        api_get_recurring_summary(
+            require_session(session_path),
+            start_date,
+            end_date,
+            filters=recurring_filter(filters),
+        )
+    )
+
+
+def create_recurring_stream(
+    merchant_id: str,
+    *,
+    frequency: str,
+    amount: float,
+    base_date: str,
+    is_active: bool = True,
+    session_path: str | None = None,
+) -> Any:
+    return to_jsonable(
+        api_create_recurring_stream(
+            require_session(session_path),
+            merchant_id,
+            frequency=frequency,
+            amount=amount,
+            base_date=base_date,
+            is_active=is_active,
+        )
+    )
+
+
+def update_recurring_stream(
+    recurring_id: str,
+    *,
+    frequency: str | None = None,
+    amount: float | None = None,
+    base_date: str | None = None,
+    is_active: bool | None = None,
+    session_path: str | None = None,
+) -> Any:
+    return to_jsonable(
+        api_update_recurring_stream(
+            require_session(session_path),
+            recurring_id,
+            frequency=frequency,
+            amount=amount,
+            base_date=base_date,
+            is_active=is_active,
+        )
+    )
+
+
+def remove_recurring_stream(
+    recurring_id: str,
+    *,
+    session_path: str | None = None,
+) -> Any:
+    return to_jsonable(
+        api_remove_recurring_stream(require_session(session_path), recurring_id)
+    )
+
+
+def register(mcp: FastMCP) -> None:
+    mcp.tool(name="recurring_list_recurring_streams")(list_recurring_streams)
+    mcp.tool(name="recurring_get_recurring_stream")(get_recurring_stream)
+    mcp.tool(name="recurring_list_recurring_occurrences")(list_recurring_occurrences)
+    mcp.tool(name="recurring_get_recurring_summary")(get_recurring_summary)
+    mcp.tool(name="recurring_create_recurring_stream")(create_recurring_stream)
+    mcp.tool(name="recurring_update_recurring_stream")(update_recurring_stream)
+    mcp.tool(name="recurring_remove_recurring_stream")(remove_recurring_stream)

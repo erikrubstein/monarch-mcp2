@@ -60,6 +60,13 @@ Implemented tools:
 - `household_list_household_members`
 - `household_update_current_user`
 - `household_update_household_preferences`
+- `recurring_list_recurring_streams`
+- `recurring_get_recurring_stream`
+- `recurring_list_recurring_occurrences`
+- `recurring_get_recurring_summary`
+- `recurring_create_recurring_stream`
+- `recurring_update_recurring_stream`
+- `recurring_remove_recurring_stream`
 
 Planned groups follow the `monarch-api2` surface: accounts, transactions,
 receipts, cashflow, reports, merchants, tags, household, categories, recurring,
