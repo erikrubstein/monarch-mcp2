@@ -66,5 +66,15 @@ async def test_server_registers_auth_group() -> None:
         "recurring_create_recurring_stream",
         "recurring_update_recurring_stream",
         "recurring_remove_recurring_stream",
+        "investments_list_investment_accounts",
+        "investments_list_holdings",
+        "investments_get_holding",
+        "investments_get_holding_performance",
+        "investments_get_portfolio",
+        "investments_get_security",
+        "investments_search_securities",
+        "investments_create_manual_holding",
+        "investments_update_manual_holding",
+        "investments_delete_manual_holding",
     }
     assert {str(resource.uri) for resource in resources} == set()
