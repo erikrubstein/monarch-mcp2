@@ -49,6 +49,10 @@ Implemented tools:
 - `cashflow_get_cashflow_summary`
 - `cashflow_get_cashflow_trends`
 - `cashflow_get_cashflow_breakdown`
+- `merchants_list_merchants`
+- `merchants_get_merchant`
+- `merchants_update_merchant`
+- `merchants_delete_merchant`
 
 Planned groups follow the `monarch-api2` surface: accounts, transactions,
 receipts, cashflow, reports, merchants, tags, household, categories, recurring,
