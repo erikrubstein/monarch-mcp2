@@ -83,6 +83,23 @@ Implemented tools:
 - `reports_create_saved_report`
 - `reports_update_saved_report`
 - `reports_delete_saved_report`
+- `goals_list_goals`
+- `goals_get_goal`
+- `goals_create_goal`
+- `goals_update_goal`
+- `goals_delete_goal`
+- `goals_archive_goal`
+- `goals_restore_goal`
+- `goals_update_goal_priorities`
+- `goals_link_goal_account_balance`
+- `goals_unlink_goal_account`
+- `goals_list_goal_events`
+- `goals_contribute_to_goal`
+- `goals_withdraw_from_goal`
+- `goals_update_goal_event`
+- `goals_delete_goal_event`
+- `goals_get_goal_budget_amounts`
+- `goals_set_goal_budget_amount`
 
 Planned groups follow the `monarch-api2` surface: accounts, transactions,
 receipts, cashflow, reports, merchants, tags, household, categories, recurring,

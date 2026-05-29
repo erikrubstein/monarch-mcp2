@@ -7,6 +7,7 @@ from monarch_mcp.groups import (
     auth,
     cashflow,
     categories,
+    goals,
     household,
     investments,
     merchants,
@@ -28,6 +29,7 @@ def create_mcp() -> FastMCP:
     recurring.register(mcp)
     investments.register(mcp)
     reports.register(mcp)
+    goals.register(mcp)
     return mcp
 
 
