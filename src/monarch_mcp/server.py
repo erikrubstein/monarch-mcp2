@@ -2,7 +2,15 @@ from __future__ import annotations
 
 from mcp.server.fastmcp import FastMCP
 
-from monarch_mcp.groups import accounts, auth, cashflow, categories, merchants, tags
+from monarch_mcp.groups import (
+    accounts,
+    auth,
+    cashflow,
+    categories,
+    household,
+    merchants,
+    tags,
+)
 
 
 def create_mcp() -> FastMCP:
@@ -13,6 +21,7 @@ def create_mcp() -> FastMCP:
     categories.register(mcp)
     cashflow.register(mcp)
     merchants.register(mcp)
+    household.register(mcp)
     return mcp
 
 

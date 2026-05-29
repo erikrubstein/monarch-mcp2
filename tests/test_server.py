@@ -52,5 +52,12 @@ async def test_server_registers_auth_group() -> None:
         "merchants_get_merchant",
         "merchants_update_merchant",
         "merchants_delete_merchant",
+        "household_get_current_user",
+        "household_get_household",
+        "household_get_household_member",
+        "household_get_household_preferences",
+        "household_list_household_members",
+        "household_update_current_user",
+        "household_update_household_preferences",
     }
     assert {str(resource.uri) for resource in resources} == set()

@@ -53,6 +53,13 @@ Implemented tools:
 - `merchants_get_merchant`
 - `merchants_update_merchant`
 - `merchants_delete_merchant`
+- `household_get_current_user`
+- `household_get_household`
+- `household_get_household_member`
+- `household_get_household_preferences`
+- `household_list_household_members`
+- `household_update_current_user`
+- `household_update_household_preferences`
 
 Planned groups follow the `monarch-api2` surface: accounts, transactions,
 receipts, cashflow, reports, merchants, tags, household, categories, recurring,
