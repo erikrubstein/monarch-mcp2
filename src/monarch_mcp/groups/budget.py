@@ -1,0 +1,294 @@
+from __future__ import annotations
+
+from typing import Any
+
+from mcp.server.fastmcp import FastMCP
+from monarch_api import (
+    clear_budget as api_clear_budget,
+    create_budget as api_create_budget,
+    get_budget as api_get_budget,
+    get_budget_category as api_get_budget_category,
+    get_budget_settings as api_get_budget_settings,
+    get_flex_rollover_settings as api_get_flex_rollover_settings,
+    list_budget_months as api_list_budget_months,
+    reset_budget as api_reset_budget,
+    reset_budget_rollover as api_reset_budget_rollover,
+    set_budget_amount as api_set_budget_amount,
+    set_budget_category_rollover as api_set_budget_category_rollover,
+    set_budget_category_variability as api_set_budget_category_variability,
+    set_budget_group_amount as api_set_budget_group_amount,
+    set_budget_group_rollover as api_set_budget_group_rollover,
+    set_budget_group_variability as api_set_budget_group_variability,
+    set_flex_budget_amount as api_set_flex_budget_amount,
+    set_flex_rollover_settings as api_set_flex_rollover_settings,
+)
+
+from monarch_mcp.serialization import to_jsonable
+from monarch_mcp.session import require_session
+
+
+def get_budget(month: str, *, session_path: str | None = None) -> Any:
+    return to_jsonable(api_get_budget(require_session(session_path), month))
+
+
+def list_budget_months(
+    start_month: str,
+    end_month: str,
+    *,
+    session_path: str | None = None,
+) -> Any:
+    return to_jsonable(
+        api_list_budget_months(require_session(session_path), start_month, end_month)
+    )
+
+
+def get_budget_settings(*, session_path: str | None = None) -> Any:
+    return to_jsonable(api_get_budget_settings(require_session(session_path)))
+
+
+def get_budget_category(
+    month: str,
+    category_id: str,
+    *,
+    session_path: str | None = None,
+) -> Any:
+    return to_jsonable(
+        api_get_budget_category(require_session(session_path), month, category_id)
+    )
+
+
+def get_flex_rollover_settings(*, session_path: str | None = None) -> Any:
+    return to_jsonable(api_get_flex_rollover_settings(require_session(session_path)))
+
+
+def set_budget_amount(
+    month: str,
+    category_id: str,
+    amount: float,
+    *,
+    apply_to_future: bool = False,
+    default_amount: float | None = None,
+    session_path: str | None = None,
+) -> Any:
+    return to_jsonable(
+        api_set_budget_amount(
+            require_session(session_path),
+            month,
+            category_id,
+            amount,
+            apply_to_future=apply_to_future,
+            default_amount=default_amount,
+        )
+    )
+
+
+def set_budget_group_amount(
+    month: str,
+    category_group_id: str,
+    amount: float,
+    *,
+    apply_to_future: bool = False,
+    default_amount: float | None = None,
+    session_path: str | None = None,
+) -> Any:
+    return to_jsonable(
+        api_set_budget_group_amount(
+            require_session(session_path),
+            month,
+            category_group_id,
+            amount,
+            apply_to_future=apply_to_future,
+            default_amount=default_amount,
+        )
+    )
+
+
+def set_flex_budget_amount(
+    month: str,
+    amount: float,
+    *,
+    apply_to_future: bool = False,
+    default_amount: float | None = None,
+    session_path: str | None = None,
+) -> Any:
+    return to_jsonable(
+        api_set_flex_budget_amount(
+            require_session(session_path),
+            month,
+            amount,
+            apply_to_future=apply_to_future,
+            default_amount=default_amount,
+        )
+    )
+
+
+def set_budget_category_variability(
+    category_id: str,
+    variability: str,
+    *,
+    session_path: str | None = None,
+) -> Any:
+    return to_jsonable(
+        api_set_budget_category_variability(
+            require_session(session_path),
+            category_id,
+            variability,
+        )
+    )
+
+
+def set_budget_group_variability(
+    category_group_id: str,
+    variability: str,
+    *,
+    session_path: str | None = None,
+) -> Any:
+    return to_jsonable(
+        api_set_budget_group_variability(
+            require_session(session_path),
+            category_group_id,
+            variability,
+        )
+    )
+
+
+def set_budget_category_rollover(
+    category_id: str,
+    *,
+    enabled: bool,
+    start_month: str | None = None,
+    starting_balance: float | None = None,
+    frequency: str | None = None,
+    target_amount: float | None = None,
+    rollover_type: str | None = None,
+    apply_to_future: bool | None = None,
+    session_path: str | None = None,
+) -> Any:
+    return to_jsonable(
+        api_set_budget_category_rollover(
+            require_session(session_path),
+            category_id,
+            enabled=enabled,
+            start_month=start_month,
+            starting_balance=starting_balance,
+            frequency=frequency,
+            target_amount=target_amount,
+            rollover_type=rollover_type,
+            apply_to_future=apply_to_future,
+        )
+    )
+
+
+def set_budget_group_rollover(
+    category_group_id: str,
+    *,
+    enabled: bool,
+    start_month: str | None = None,
+    starting_balance: float | None = None,
+    rollover_type: str | None = None,
+    session_path: str | None = None,
+) -> Any:
+    return to_jsonable(
+        api_set_budget_group_rollover(
+            require_session(session_path),
+            category_group_id,
+            enabled=enabled,
+            start_month=start_month,
+            starting_balance=starting_balance,
+            rollover_type=rollover_type,
+        )
+    )
+
+
+def set_flex_rollover_settings(
+    *,
+    enabled: bool,
+    start_month: str | None = None,
+    starting_balance: float | None = None,
+    session_path: str | None = None,
+) -> Any:
+    return to_jsonable(
+        api_set_flex_rollover_settings(
+            require_session(session_path),
+            enabled=enabled,
+            start_month=start_month,
+            starting_balance=starting_balance,
+        )
+    )
+
+
+def reset_budget_rollover(
+    month: str,
+    *,
+    category_id: str | None = None,
+    category_group_id: str | None = None,
+    starting_balance: float | None = None,
+    session_path: str | None = None,
+) -> Any:
+    return to_jsonable(
+        api_reset_budget_rollover(
+            require_session(session_path),
+            month,
+            category_id=category_id,
+            category_group_id=category_group_id,
+            starting_balance=starting_balance,
+        )
+    )
+
+
+def create_budget(month: str, *, session_path: str | None = None) -> Any:
+    return to_jsonable(api_create_budget(require_session(session_path), month))
+
+
+def reset_budget(
+    month: str,
+    *,
+    category_ids: list[str] | None = None,
+    category_type: str | None = None,
+    budget_variability: str | None = None,
+    overwrite_existing: bool = False,
+    session_path: str | None = None,
+) -> Any:
+    return to_jsonable(
+        api_reset_budget(
+            require_session(session_path),
+            month,
+            category_ids=category_ids,
+            category_type=category_type,
+            budget_variability=budget_variability,
+            overwrite_existing=overwrite_existing,
+        )
+    )
+
+
+def clear_budget(
+    month: str,
+    *,
+    confirm: bool = False,
+    session_path: str | None = None,
+) -> Any:
+    return to_jsonable(
+        api_clear_budget(require_session(session_path), month, confirm=confirm)
+    )
+
+
+def register(mcp: FastMCP) -> None:
+    mcp.tool(name="budget_get_budget")(get_budget)
+    mcp.tool(name="budget_list_budget_months")(list_budget_months)
+    mcp.tool(name="budget_get_budget_settings")(get_budget_settings)
+    mcp.tool(name="budget_get_budget_category")(get_budget_category)
+    mcp.tool(name="budget_get_flex_rollover_settings")(get_flex_rollover_settings)
+    mcp.tool(name="budget_set_budget_amount")(set_budget_amount)
+    mcp.tool(name="budget_set_budget_group_amount")(set_budget_group_amount)
+    mcp.tool(name="budget_set_flex_budget_amount")(set_flex_budget_amount)
+    mcp.tool(name="budget_set_budget_category_variability")(
+        set_budget_category_variability
+    )
+    mcp.tool(name="budget_set_budget_group_variability")(set_budget_group_variability)
+    mcp.tool(name="budget_set_budget_category_rollover")(set_budget_category_rollover)
+    mcp.tool(name="budget_set_budget_group_rollover")(set_budget_group_rollover)
+    mcp.tool(name="budget_set_flex_rollover_settings")(set_flex_rollover_settings)
+    mcp.tool(name="budget_reset_budget_rollover")(reset_budget_rollover)
+    mcp.tool(name="budget_create_budget")(create_budget)
+    mcp.tool(name="budget_reset_budget")(reset_budget)
+    mcp.tool(name="budget_clear_budget")(clear_budget)

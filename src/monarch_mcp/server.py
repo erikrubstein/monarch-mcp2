@@ -5,6 +5,7 @@ from mcp.server.fastmcp import FastMCP
 from monarch_mcp.groups import (
     accounts,
     auth,
+    budget,
     cashflow,
     categories,
     goals,
@@ -30,6 +31,7 @@ def create_mcp() -> FastMCP:
     investments.register(mcp)
     reports.register(mcp)
     goals.register(mcp)
+    budget.register(mcp)
     return mcp
 
 
