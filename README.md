@@ -4,10 +4,11 @@ Unofficial MCP server for Monarch Money.
 
 This project is not affiliated with, endorsed by, or supported by Monarch Money.
 
-`monarch-mcp2` exposes the public function surface from
-[`monarch-api2`](https://github.com/erikrubstein/monarch-api2) as Model Context
-Protocol tools for AI agents. Tools are organized by Monarch feature area and
-map 1-to-1 to backend API functions:
+`monarch-mcp2` gives agents like Codex and Claude access to Monarch Money
+through Model Context Protocol tools. It exposes the public function surface
+from [`monarch-api2`](https://github.com/erikrubstein/monarch-api2), organized
+by Monarch feature area, with tool names that map 1-to-1 to backend API
+functions:
 
 ```text
 {group}_{function_name}
@@ -36,38 +37,67 @@ GitHub:
 monarch-api2 @ git+https://github.com/erikrubstein/monarch-api2.git@v0.1.0
 ```
 
-Install from GitHub:
+Install the MCP server from GitHub:
 
 ```bash
 pipx install git+https://github.com/erikrubstein/monarch-mcp2.git
 ```
 
-Or install from a local checkout:
+After installation, confirm the `monarch-mcp` command is available:
 
 ```bash
-python3 -m venv .venv
-.venv/bin/pip install -e .
+which monarch-mcp
 ```
 
-For local sibling development against an editable `monarch-api2` checkout:
+Use the absolute path from `which monarch-mcp` in your MCP client config.
 
-```bash
-.venv/bin/pip install -e ../monarch-api2
+## Codex
+
+Add the server to your Codex config at `~/.codex/config.toml`:
+
+```toml
+[mcp_servers.monarch]
+command = "/absolute/path/to/monarch-mcp"
+args = []
+startup_timeout_sec = 30
+
+[mcp_servers.monarch.env]
+MONARCH_SESSION_PATH = "/absolute/path/to/session.json"
 ```
 
-After installation, the `monarch-mcp` command should be available:
+Restart Codex after editing the config. Once loaded, Codex should see tools such
+as `accounts_list_accounts`, `transactions_list_transactions`, and
+`budget_get_budget`.
 
-```bash
-monarch-mcp
+## Claude Desktop
+
+Add the server to your Claude Desktop config file.
+
+On macOS, the config file is usually:
+
+```text
+~/Library/Application Support/Claude/claude_desktop_config.json
 ```
 
-## Usage
+Example:
 
-Run the MCP server over stdio:
-
-```bash
-monarch-mcp
+```json
+{
+  "mcpServers": {
+    "monarch": {
+      "command": "/absolute/path/to/monarch-mcp",
+      "args": [],
+      "env": {
+        "MONARCH_SESSION_PATH": "/absolute/path/to/session.json"
+      }
+    }
+  }
+}
 ```
+
+Restart Claude Desktop after editing the config.
+
+## Sessions
 
 The default session file is:
 
@@ -78,17 +108,30 @@ The default session file is:
 You can override it with `MONARCH_SESSION_PATH`, or set `MONARCH_CONFIG_DIR` to
 change the config directory.
 
-Example MCP client configuration:
+Use `auth_create_session` to create a Monarch session. Auth tools redact the
+session token by default. Set `include_token=true` only when a trusted caller
+explicitly needs the bearer token, such as when saving a session.
+
+You can also provide a session file created by `monarch-api2`,
+`monarch-cli2`, or another trusted tool. The MCP server loads the configured
+session file for authenticated tools.
+
+## MCP Inspector
+
+You can inspect the server with MCP Inspector:
+
+```bash
+npx @modelcontextprotocol/inspector /absolute/path/to/monarch-mcp
+```
+
+If Inspector asks for transport details, use stdio with:
 
 ```json
 {
-  "mcpServers": {
-    "monarch": {
-      "command": "/absolute/path/to/monarch-mcp2/.venv/bin/monarch-mcp",
-      "env": {
-        "MONARCH_SESSION_PATH": "/absolute/path/to/session.json"
-      }
-    }
+  "command": "/absolute/path/to/monarch-mcp",
+  "args": [],
+  "env": {
+    "MONARCH_SESSION_PATH": "/absolute/path/to/session.json"
   }
 }
 ```
@@ -164,28 +207,12 @@ Examples:
 When `fields` is provided, it is applied to the selected full/raw data and the
 tool returns the projected object directly.
 
-## Authentication
-
-Use `auth_create_session` to create a Monarch session. Auth tools redact the
-session token by default. Set `include_token=true` only when a trusted caller
-explicitly needs the bearer token, such as when saving a session.
-
-You can also provide a session file created by `monarch-api2`,
-`monarch-cli2`, or another trusted tool. The MCP server loads the configured
-session file for authenticated tools.
-
 ## Development
 
 Run the test suite:
 
 ```bash
 .venv/bin/python -m pytest
-```
-
-Run the server from a local checkout:
-
-```bash
-.venv/bin/monarch-mcp
 ```
 
 The MCP source lives in `src/monarch_mcp`. Group-specific tools live in
