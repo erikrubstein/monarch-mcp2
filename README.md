@@ -1,152 +1,48 @@
 # monarch-mcp2
 
-Unofficial MCP server for Monarch Money, backed directly by
-[`monarch-api2`](https://github.com/erikrubstein/monarch-api2).
+Unofficial MCP server for Monarch Money.
 
 This project is not affiliated with, endorsed by, or supported by Monarch Money.
 
-## Design
+`monarch-mcp2` exposes the public function surface from
+[`monarch-api2`](https://github.com/erikrubstein/monarch-api2) as Model Context
+Protocol tools for AI agents. Tools are organized by Monarch feature area and
+map 1-to-1 to backend API functions:
 
-`monarch-mcp2` mirrors the API package by product group. MCP tools map to
-`monarch-api2` functions using `{group}_{function_name}` names, while shared
-configuration, session loading, serialization, and server startup live in common
-modules.
+```text
+{group}_{function_name}
+```
 
-Implemented tools:
+## Features
 
-- `auth_create_session`
-- `auth_save_session`
-- `auth_load_session`
-- `accounts_list_accounts`
-- `accounts_get_account`
-- `accounts_get_net_worth_performance`
-- `accounts_get_net_worth_breakdown`
-- `accounts_get_historical_balances`
-- `accounts_get_account_history`
-- `accounts_create_manual_account`
-- `accounts_update_account`
-- `accounts_delete_account`
-- `tags_list_tags`
-- `tags_get_tag`
-- `tags_create_tag`
-- `tags_update_tag`
-- `tags_delete_tag`
-- `tags_reorder_tag`
-- `categories_list_categories`
-- `categories_list_category_groups`
-- `categories_get_category_catalog`
-- `categories_get_category_group`
-- `categories_get_category`
-- `categories_create_category`
-- `categories_update_category`
-- `categories_remove_category`
-- `categories_reactivate_category`
-- `categories_reorder_category`
-- `categories_create_category_group`
-- `categories_update_category_group`
-- `categories_delete_category_group`
-- `categories_reorder_category_group`
-- `cashflow_get_cashflow_summary`
-- `cashflow_get_cashflow_trends`
-- `cashflow_get_cashflow_breakdown`
-- `merchants_list_merchants`
-- `merchants_get_merchant`
-- `merchants_update_merchant`
-- `merchants_delete_merchant`
-- `household_get_current_user`
-- `household_get_household`
-- `household_get_household_member`
-- `household_get_household_preferences`
-- `household_list_household_members`
-- `household_update_current_user`
-- `household_update_household_preferences`
-- `recurring_list_recurring_streams`
-- `recurring_get_recurring_stream`
-- `recurring_list_recurring_occurrences`
-- `recurring_get_recurring_summary`
-- `recurring_create_recurring_stream`
-- `recurring_update_recurring_stream`
-- `recurring_remove_recurring_stream`
-- `investments_list_investment_accounts`
-- `investments_list_holdings`
-- `investments_get_holding`
-- `investments_get_holding_performance`
-- `investments_get_portfolio`
-- `investments_get_security`
-- `investments_search_securities`
-- `investments_create_manual_holding`
-- `investments_update_manual_holding`
-- `investments_delete_manual_holding`
-- `reports_get_report_data`
-- `reports_list_saved_reports`
-- `reports_get_saved_report`
-- `reports_create_saved_report`
-- `reports_update_saved_report`
-- `reports_delete_saved_report`
-- `goals_list_goals`
-- `goals_get_goal`
-- `goals_create_goal`
-- `goals_update_goal`
-- `goals_delete_goal`
-- `goals_archive_goal`
-- `goals_restore_goal`
-- `goals_update_goal_priorities`
-- `goals_link_goal_account_balance`
-- `goals_unlink_goal_account`
-- `goals_list_goal_events`
-- `goals_contribute_to_goal`
-- `goals_withdraw_from_goal`
-- `goals_update_goal_event`
-- `goals_delete_goal_event`
-- `goals_get_goal_budget_amounts`
-- `goals_set_goal_budget_amount`
-- `budget_get_budget`
-- `budget_list_budget_months`
-- `budget_get_budget_settings`
-- `budget_get_budget_category`
-- `budget_get_flex_rollover_settings`
-- `budget_set_budget_amount`
-- `budget_set_budget_group_amount`
-- `budget_set_flex_budget_amount`
-- `budget_set_budget_category_variability`
-- `budget_set_budget_group_variability`
-- `budget_set_budget_category_rollover`
-- `budget_set_budget_group_rollover`
-- `budget_set_flex_rollover_settings`
-- `budget_reset_budget_rollover`
-- `budget_create_budget`
-- `budget_reset_budget`
-- `budget_clear_budget`
-- `transactions_list_transactions`
-- `transactions_get_transaction`
-- `transactions_create_transaction`
-- `transactions_update_transaction`
-- `transactions_delete_transaction`
-- `transactions_get_transaction_splits`
-- `transactions_update_transaction_splits`
-- `transactions_unsplit_transaction`
-- `transactions_list_transaction_attachments`
-- `transactions_get_transaction_attachment`
-- `transactions_upload_transaction_attachment`
-- `transactions_download_transaction_attachment`
-- `transactions_delete_transaction_attachment`
-- `receipts_list_receipts`
-- `receipts_get_receipt`
-- `receipts_upload_receipt`
-- `receipts_delete_receipt`
-- `receipts_match_receipt`
-- `receipts_unmatch_receipt`
-- `receipts_update_receipt`
-- `receipts_get_receipt_settings`
-- `receipts_update_receipt_settings`
-
-Planned groups follow the `monarch-api2` surface: accounts, transactions,
-receipts, cashflow, reports, merchants, tags, household, categories, recurring,
-investments, goals, and budget.
+- MCP tools backed directly by `monarch-api2`, not the CLI
+- 1-to-1 tool names matching the API function surface
+- Typed input schemas for filters, enums, nested objects, and mutations
+- Tool annotations for read-only, write, and destructive operations
+- Compact `summary` output by default, similar to the CLI's table/detail views
+- `full` output when agents need the complete structured API data
+- `raw` output when agents explicitly need retained raw response payloads
+- Dotted-path field projection for targeted output
+- Tools for auth, accounts, transactions, receipts, cashflow, reports,
+  merchants, tags, household, categories, recurring items, investments, goals,
+  and budgets
 
 ## Installation
 
-From a local checkout:
+This package depends on `monarch-api2` version `0.1.0`, installed directly from
+GitHub:
+
+```toml
+monarch-api2 @ git+https://github.com/erikrubstein/monarch-api2.git@v0.1.0
+```
+
+Install from GitHub:
+
+```bash
+pipx install git+https://github.com/erikrubstein/monarch-mcp2.git
+```
+
+Or install from a local checkout:
 
 ```bash
 python3 -m venv .venv
@@ -157,6 +53,12 @@ For local sibling development against an editable `monarch-api2` checkout:
 
 ```bash
 .venv/bin/pip install -e ../monarch-api2
+```
+
+After installation, the `monarch-mcp` command should be available:
+
+```bash
+monarch-mcp
 ```
 
 ## Usage
@@ -176,21 +78,132 @@ The default session file is:
 You can override it with `MONARCH_SESSION_PATH`, or set `MONARCH_CONFIG_DIR` to
 change the config directory.
 
-Example local MCP client configuration:
+Example MCP client configuration:
 
 ```json
 {
   "mcpServers": {
     "monarch": {
-      "command": "/absolute/path/to/monarch-mcp2/.venv/bin/monarch-mcp"
+      "command": "/absolute/path/to/monarch-mcp2/.venv/bin/monarch-mcp",
+      "env": {
+        "MONARCH_SESSION_PATH": "/absolute/path/to/session.json"
+      }
     }
   }
 }
 ```
 
+## Tools
+
+Tool names mirror `monarch-api2` function names:
+
+```text
+auth_create_session
+accounts_list_accounts
+transactions_list_transactions
+transactions_get_transaction
+receipts_list_receipts
+cashflow_get_cashflow_summary
+reports_get_report_data
+merchants_list_merchants
+tags_list_tags
+household_get_current_user
+categories_list_categories
+recurring_list_recurring_streams
+investments_get_portfolio
+goals_list_goals
+budget_get_budget
+```
+
+The full server currently exposes 125 tools across all implemented API groups.
+Use an MCP client or MCP Inspector to browse the complete tool list and schemas.
+
+## Output
+
+By default, tools return compact `summary` output. This is intended for agent
+workflows where the caller usually needs the same fundamental fields a person
+would scan in the CLI.
+
+All tools accept common output controls:
+
+- `output_mode="summary"` returns compact CLI-style output.
+- `output_mode="full"` returns complete structured API output without `raw`.
+- `output_mode="raw"` returns complete structured API output including `raw`.
+- `fields=[...]` returns only selected dotted-path fields.
+
+Examples:
+
+```json
+{
+  "limit": 10
+}
+```
+
+```json
+{
+  "limit": 10,
+  "output_mode": "full"
+}
+```
+
+```json
+{
+  "transaction_id": "TRANSACTION_ID",
+  "output_mode": "raw"
+}
+```
+
+```json
+{
+  "limit": 10,
+  "output_mode": "raw",
+  "fields": ["id", "date", "merchant.name", "category.name", "raw"]
+}
+```
+
+When `fields` is provided, it is applied to the selected full/raw data and the
+tool returns the projected object directly.
+
+## Authentication
+
+Use `auth_create_session` to create a Monarch session. Auth tools redact the
+session token by default. Set `include_token=true` only when a trusted caller
+explicitly needs the bearer token, such as when saving a session.
+
+You can also provide a session file created by `monarch-api2`,
+`monarch-cli2`, or another trusted tool. The MCP server loads the configured
+session file for authenticated tools.
+
+## Development
+
+Run the test suite:
+
+```bash
+.venv/bin/python -m pytest
+```
+
+Run the server from a local checkout:
+
+```bash
+.venv/bin/monarch-mcp
+```
+
+The MCP source lives in `src/monarch_mcp`. Group-specific tools live in
+`src/monarch_mcp/groups`.
+
 ## Security
 
-This server works with sensitive personal finance data. Treat saved session
-files like passwords, and avoid exposing this MCP server to untrusted clients.
-Auth tools return AuthSession-shaped objects, but redact `token` by default. Set
-`include_token=true` only when a caller explicitly needs the raw bearer token.
+This is an unofficial tool that can access sensitive personal finance data.
+Treat saved session files like passwords.
+
+- Do not commit session files, tokens, downloaded receipts, or personal finance
+  exports.
+- Use `output_mode="raw"` carefully, since raw payloads may include large or
+  sensitive response data.
+- Only connect this server to trusted MCP clients.
+- Report security-sensitive issues privately instead of opening a public issue
+  with credentials or personal financial data.
+
+## License
+
+MIT License. See [LICENSE](LICENSE).
