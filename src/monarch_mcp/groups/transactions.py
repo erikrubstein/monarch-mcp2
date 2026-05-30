@@ -27,15 +27,21 @@ from monarch_mcp.converters import (
 )
 from monarch_mcp.serialization import to_jsonable
 from monarch_mcp.session import require_session
+from monarch_mcp.schemas import (
+    TransactionFilterInput,
+    TransactionReviewStatusValue,
+    TransactionSortValue,
+    TransactionSplitDraftInput,
+)
 from monarch_mcp.tool_metadata import register_api_tool
 
 
 def list_transactions(
     *,
-    filters: dict[str, Any] | None = None,
+    filters: TransactionFilterInput | None = None,
     limit: int = 100,
     offset: int = 0,
-    sort: str = "date",
+    sort: TransactionSortValue = "date",
     session_path: str | None = None,
 ) -> Any:
     return to_jsonable(
@@ -103,7 +109,7 @@ def update_transaction(
     category_id: str | None = None,
     notes: str | None = None,
     hide_from_reports: bool | None = None,
-    review_status: str | None = None,
+    review_status: TransactionReviewStatusValue | None = None,
     needs_review_by_user_id: str | None = None,
     owner_user_id: str | None = None,
     tag_ids: list[str] | None = None,
@@ -158,7 +164,7 @@ def get_transaction_splits(
 
 def update_transaction_splits(
     transaction_id: str,
-    splits: list[dict[str, Any]],
+    splits: list[TransactionSplitDraftInput],
     *,
     session_path: str | None = None,
 ) -> Any:

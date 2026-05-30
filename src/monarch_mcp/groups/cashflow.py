@@ -15,6 +15,12 @@ from monarch_api import (
 from monarch_mcp.converters import cashflow_filter
 from monarch_mcp.serialization import to_jsonable
 from monarch_mcp.session import require_session
+from monarch_mcp.schemas import (
+    CashflowBreakdownGroupValue,
+    CashflowDirectionValue,
+    CashflowFilterInput,
+    CashflowIntervalValue,
+)
 from monarch_mcp.tool_metadata import register_api_tool
 
 
@@ -22,7 +28,7 @@ def get_cashflow_summary(
     start_date: str,
     end_date: str,
     *,
-    filters: dict[str, Any] | None = None,
+    filters: CashflowFilterInput | None = None,
     session_path: str | None = None,
 ) -> Any:
     return to_jsonable(
@@ -39,8 +45,8 @@ def get_cashflow_trends(
     start_date: str,
     end_date: str,
     *,
-    interval: str = "month",
-    filters: dict[str, Any] | None = None,
+    interval: CashflowIntervalValue = "month",
+    filters: CashflowFilterInput | None = None,
     session_path: str | None = None,
 ) -> Any:
     return to_jsonable(
@@ -57,10 +63,10 @@ def get_cashflow_trends(
 def get_cashflow_breakdown(
     start_date: str,
     end_date: str,
-    direction: str,
+    direction: CashflowDirectionValue,
     *,
-    group_by: str = "category",
-    filters: dict[str, Any] | None = None,
+    group_by: CashflowBreakdownGroupValue = "category",
+    filters: CashflowFilterInput | None = None,
     session_path: str | None = None,
 ) -> Any:
     return to_jsonable(

@@ -157,3 +157,34 @@ async def test_server_registers_tool_metadata() -> None:
     assert by_name["transactions_delete_transaction"].annotations.destructiveHint is True
     assert by_name["budget_clear_budget"].annotations.destructiveHint is True
     assert by_name["transactions_update_transaction"].annotations.readOnlyHint is False
+
+
+@pytest.mark.anyio
+async def test_server_exposes_typed_input_schemas() -> None:
+    mcp = create_mcp()
+
+    tools = await mcp.list_tools()
+    by_name = {tool.name: tool for tool in tools}
+
+    transaction_schema = by_name["transactions_list_transactions"].inputSchema
+    transaction_filter = transaction_schema["$defs"]["TransactionFilterInput"]
+    assert transaction_filter["additionalProperties"] is False
+    assert "needs_review" in transaction_filter["properties"]
+    assert "review_status" not in transaction_filter["properties"]
+    assert transaction_schema["properties"]["sort"]["enum"] == [
+        "date",
+        "inverse_date",
+        "amount",
+        "inverse_amount",
+    ]
+
+    merchant_schema = by_name["merchants_list_merchants"].inputSchema
+    assert merchant_schema["properties"]["sort"]["enum"] == [
+        "NAME",
+        "TRANSACTION_COUNT",
+    ]
+
+    receipt_schema = by_name["receipts_update_receipt"].inputSchema
+    line_item = receipt_schema["$defs"]["ReceiptLineItemUpdateInput"]
+    assert line_item["additionalProperties"] is False
+    assert line_item["required"] == ["line_item_id"]

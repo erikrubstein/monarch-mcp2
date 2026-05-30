@@ -20,15 +20,21 @@ from monarch_mcp.converters import (
 )
 from monarch_mcp.serialization import to_jsonable
 from monarch_mcp.session import require_session
+from monarch_mcp.schemas import (
+    ReportGroupValue,
+    ReportSortValue,
+    ReportTimeframeValue,
+    TransactionFilterInput,
+)
 from monarch_mcp.tool_metadata import register_api_tool
 
 
 def get_report_data(
     *,
-    filters: dict[str, Any] | None = None,
-    group_by: str | list[str] | None = "category",
-    timeframe: str | None = None,
-    sort_by: str | None = None,
+    filters: TransactionFilterInput | None = None,
+    group_by: ReportGroupValue | list[ReportGroupValue] | None = "category",
+    timeframe: ReportTimeframeValue | None = None,
+    sort_by: ReportSortValue | None = None,
     fill_empty_values: bool = True,
     session_path: str | None = None,
 ) -> Any:
@@ -55,9 +61,9 @@ def get_saved_report(report_id: str, *, session_path: str | None = None) -> Any:
 def create_saved_report(
     name: str,
     *,
-    filters: dict[str, Any] | None = None,
-    group_by: str | list[str] | None = "category",
-    timeframe: str | None = None,
+    filters: TransactionFilterInput | None = None,
+    group_by: ReportGroupValue | list[ReportGroupValue] | None = "category",
+    timeframe: ReportTimeframeValue | None = None,
     session_path: str | None = None,
 ) -> Any:
     return to_jsonable(

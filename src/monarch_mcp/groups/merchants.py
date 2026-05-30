@@ -13,6 +13,7 @@ from monarch_api import (
 
 from monarch_mcp.serialization import to_jsonable
 from monarch_mcp.session import require_session
+from monarch_mcp.schemas import MerchantSortValue
 from monarch_mcp.tool_metadata import register_api_tool
 
 
@@ -21,7 +22,7 @@ def list_merchants(
     search: str | None = None,
     limit: int | None = None,
     offset: int | None = None,
-    sort: str = "TRANSACTION_COUNT",
+    sort: MerchantSortValue = "TRANSACTION_COUNT",
     session_path: str | None = None,
 ) -> Any:
     return to_jsonable(

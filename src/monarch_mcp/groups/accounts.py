@@ -18,12 +18,15 @@ from monarch_api import (
 
 from monarch_mcp.serialization import to_jsonable
 from monarch_mcp.session import require_session
+from monarch_mcp.schemas import AccountFilterInput
 from monarch_mcp.tool_metadata import register_api_tool
 
 
 def account_filter_from_dict(filters: dict[str, Any] | None) -> AccountFilter | None:
     if filters is None:
         return None
+    if isinstance(filters, AccountFilterInput):
+        filters = filters.model_dump(exclude_none=True)
     return AccountFilter(
         account_ids=filters.get("account_ids"),
         account_types=filters.get("account_types"),
@@ -36,7 +39,7 @@ def account_filter_from_dict(filters: dict[str, Any] | None) -> AccountFilter | 
 
 def list_accounts(
     *,
-    filters: dict[str, Any] | None = None,
+    filters: AccountFilterInput | None = None,
     session_path: str | None = None,
 ) -> Any:
     return to_jsonable(
@@ -55,7 +58,7 @@ def get_net_worth_performance(
     *,
     start_date: str | None = None,
     end_date: str | None = None,
-    filters: dict[str, Any] | None = None,
+    filters: AccountFilterInput | None = None,
     use_adaptive_granularity: bool | None = None,
     session_path: str | None = None,
 ) -> Any:
@@ -74,7 +77,7 @@ def get_net_worth_breakdown(
     start_date: str,
     timeframe: str,
     *,
-    filters: dict[str, Any] | None = None,
+    filters: AccountFilterInput | None = None,
     session_path: str | None = None,
 ) -> Any:
     return to_jsonable(
@@ -90,7 +93,7 @@ def get_net_worth_breakdown(
 def get_historical_balances(
     balance_date: str,
     *,
-    filters: dict[str, Any] | None = None,
+    filters: AccountFilterInput | None = None,
     session_path: str | None = None,
 ) -> Any:
     return to_jsonable(

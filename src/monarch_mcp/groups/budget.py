@@ -25,6 +25,12 @@ from monarch_api import (
 
 from monarch_mcp.serialization import to_jsonable
 from monarch_mcp.session import require_session
+from monarch_mcp.schemas import (
+    BudgetRolloverFrequencyValue,
+    BudgetRolloverTypeValue,
+    BudgetVariabilityValue,
+    CategoryTypeValue,
+)
 from monarch_mcp.tool_metadata import register_api_tool
 
 
@@ -125,7 +131,7 @@ def set_flex_budget_amount(
 
 def set_budget_category_variability(
     category_id: str,
-    variability: str,
+    variability: BudgetVariabilityValue,
     *,
     session_path: str | None = None,
 ) -> Any:
@@ -140,7 +146,7 @@ def set_budget_category_variability(
 
 def set_budget_group_variability(
     category_group_id: str,
-    variability: str,
+    variability: BudgetVariabilityValue,
     *,
     session_path: str | None = None,
 ) -> Any:
@@ -159,9 +165,9 @@ def set_budget_category_rollover(
     enabled: bool,
     start_month: str | None = None,
     starting_balance: float | None = None,
-    frequency: str | None = None,
+    frequency: BudgetRolloverFrequencyValue | None = None,
     target_amount: float | None = None,
-    rollover_type: str | None = None,
+    rollover_type: BudgetRolloverTypeValue | None = None,
     apply_to_future: bool | None = None,
     session_path: str | None = None,
 ) -> Any:
@@ -186,7 +192,7 @@ def set_budget_group_rollover(
     enabled: bool,
     start_month: str | None = None,
     starting_balance: float | None = None,
-    rollover_type: str | None = None,
+    rollover_type: BudgetRolloverTypeValue | None = None,
     session_path: str | None = None,
 ) -> Any:
     return to_jsonable(
@@ -245,8 +251,8 @@ def reset_budget(
     month: str,
     *,
     category_ids: list[str] | None = None,
-    category_type: str | None = None,
-    budget_variability: str | None = None,
+    category_type: CategoryTypeValue | None = None,
+    budget_variability: BudgetVariabilityValue | None = None,
     overwrite_existing: bool = False,
     session_path: str | None = None,
 ) -> Any:

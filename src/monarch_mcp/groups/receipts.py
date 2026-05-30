@@ -18,12 +18,13 @@ from monarch_api import (
 from monarch_mcp.converters import receipt_filter, receipt_line_items
 from monarch_mcp.serialization import to_jsonable
 from monarch_mcp.session import require_session
+from monarch_mcp.schemas import ReceiptFilterInput, ReceiptLineItemUpdateInput
 from monarch_mcp.tool_metadata import register_api_tool
 
 
 def list_receipts(
     *,
-    filters: dict[str, Any] | None = None,
+    filters: ReceiptFilterInput | None = None,
     limit: int = 100,
     offset: int = 0,
     session_path: str | None = None,
@@ -87,7 +88,7 @@ def update_receipt(
     tax: float | None = None,
     tip: float | None = None,
     grand_total: float | None = None,
-    line_items: list[dict[str, Any]] | None = None,
+    line_items: list[ReceiptLineItemUpdateInput] | None = None,
     transaction_date: str | None = None,
     transaction_total: float | None = None,
     session_path: str | None = None,

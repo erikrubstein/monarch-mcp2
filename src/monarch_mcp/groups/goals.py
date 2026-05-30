@@ -25,6 +25,7 @@ from monarch_api import (
 
 from monarch_mcp.serialization import to_jsonable
 from monarch_mcp.session import require_session
+from monarch_mcp.schemas import GoalStatusValue, GoalTypeValue
 from monarch_mcp.tool_metadata import register_api_tool
 
 
@@ -48,7 +49,7 @@ def get_goal(goal_id: str, *, session_path: str | None = None) -> Any:
 def create_goal(
     *,
     name: str,
-    goal_type: str = "custom",
+    goal_type: GoalTypeValue = "custom",
     target_amount: float | None = None,
     target_date: str | None = None,
     planned_monthly_contribution: float | None = None,
@@ -78,7 +79,7 @@ def update_goal(
     goal_id: str,
     *,
     name: str | None = None,
-    goal_type: str | None = None,
+    goal_type: GoalTypeValue | None = None,
     target_amount: float | None = None,
     target_date: str | None = None,
     planned_monthly_contribution: float | None = None,
@@ -86,7 +87,7 @@ def update_goal(
     priority: int | None = None,
     image_storage_provider: str | None = None,
     image_storage_provider_id: str | None = None,
-    status: str | None = None,
+    status: GoalStatusValue | None = None,
     session_path: str | None = None,
 ) -> Any:
     return to_jsonable(

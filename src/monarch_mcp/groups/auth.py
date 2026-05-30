@@ -11,6 +11,7 @@ from monarch_api import save_session as api_save_session
 
 from monarch_mcp.config import resolve_session_path
 from monarch_mcp.serialization import to_jsonable
+from monarch_mcp.schemas import AuthSessionInput
 from monarch_mcp.tool_metadata import register_api_tool
 
 
@@ -28,7 +29,9 @@ def session_to_dict(
     return to_jsonable(data)  # type: ignore[return-value]
 
 
-def session_from_dict(data: dict[str, Any]) -> AuthSession:
+def session_from_dict(data: AuthSessionInput | dict[str, Any]) -> AuthSession:
+    if isinstance(data, AuthSessionInput):
+        data = data.model_dump()
     return AuthSession.from_dict(data)
 
 
@@ -52,7 +55,7 @@ def create_session(
     return session_to_dict(session, include_token=include_token)
 
 
-def save_session(session: dict[str, Any], path: str) -> None:
+def save_session(session: AuthSessionInput, path: str) -> None:
     api_save_session(session_from_dict(session), Path(path).expanduser())
 
 

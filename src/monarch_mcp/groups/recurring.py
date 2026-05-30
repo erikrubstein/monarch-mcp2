@@ -16,12 +16,13 @@ from monarch_api import (
 from monarch_mcp.converters import recurring_filter
 from monarch_mcp.serialization import to_jsonable
 from monarch_mcp.session import require_session
+from monarch_mcp.schemas import RecurringFilterInput, RecurringFrequencyValue
 from monarch_mcp.tool_metadata import register_api_tool
 
 
 def list_recurring_streams(
     *,
-    filters: dict[str, Any] | None = None,
+    filters: RecurringFilterInput | None = None,
     include_pending: bool = True,
     include_liabilities: bool = True,
     session_path: str | None = None,
@@ -55,7 +56,7 @@ def list_recurring_occurrences(
     start_date: str,
     end_date: str,
     *,
-    filters: dict[str, Any] | None = None,
+    filters: RecurringFilterInput | None = None,
     include_liabilities: bool = True,
     session_path: str | None = None,
 ) -> Any:
@@ -74,7 +75,7 @@ def get_recurring_summary(
     start_date: str,
     end_date: str,
     *,
-    filters: dict[str, Any] | None = None,
+    filters: RecurringFilterInput | None = None,
     session_path: str | None = None,
 ) -> Any:
     return to_jsonable(
@@ -90,7 +91,7 @@ def get_recurring_summary(
 def create_recurring_stream(
     merchant_id: str,
     *,
-    frequency: str,
+    frequency: RecurringFrequencyValue,
     amount: float,
     base_date: str,
     is_active: bool = True,
@@ -111,7 +112,7 @@ def create_recurring_stream(
 def update_recurring_stream(
     recurring_id: str,
     *,
-    frequency: str | None = None,
+    frequency: RecurringFrequencyValue | None = None,
     amount: float | None = None,
     base_date: str | None = None,
     is_active: bool | None = None,

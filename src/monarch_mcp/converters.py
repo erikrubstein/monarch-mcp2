@@ -18,6 +18,13 @@ from monarch_api.types.transactions import (
     TransactionSplitDraft,
     TransactionVisibility,
 )
+from pydantic import BaseModel
+
+
+def input_dict(data):
+    if isinstance(data, BaseModel):
+        return data.model_dump(exclude_none=True)
+    return data
 
 
 def category_type(value: str | None) -> CategoryType | None:
@@ -25,6 +32,7 @@ def category_type(value: str | None) -> CategoryType | None:
 
 
 def cashflow_filter(data: dict[str, Any] | None) -> CashflowFilter | None:
+    data = input_dict(data)
     if data is None:
         return None
     return CashflowFilter(
@@ -38,6 +46,7 @@ def cashflow_filter(data: dict[str, Any] | None) -> CashflowFilter | None:
 
 
 def transaction_filter(data: dict[str, Any] | None) -> TransactionFilter | None:
+    data = input_dict(data)
     if data is None:
         return None
     return TransactionFilter(
@@ -77,6 +86,7 @@ def transaction_filter(data: dict[str, Any] | None) -> TransactionFilter | None:
 
 
 def recurring_filter(data: dict[str, Any] | None) -> RecurringFilter | None:
+    data = input_dict(data)
     if data is None:
         return None
     return RecurringFilter(
@@ -91,6 +101,7 @@ def recurring_filter(data: dict[str, Any] | None) -> RecurringFilter | None:
 
 
 def receipt_filter(data: dict[str, Any] | None) -> ReceiptFilter | None:
+    data = input_dict(data)
     if data is None:
         return None
     status = data.get("status")
@@ -104,6 +115,7 @@ def receipt_line_items(
 ) -> list[ReceiptLineItemUpdate] | None:
     if values is None:
         return None
+    values = [input_dict(item) for item in values]
     return [
         ReceiptLineItemUpdate(
             line_item_id=str(item["line_item_id"]),
@@ -119,6 +131,7 @@ def receipt_line_items(
 def transaction_split_drafts(
     values: list[dict[str, Any]],
 ) -> list[TransactionSplitDraft]:
+    values = [input_dict(item) for item in values]
     return [
         TransactionSplitDraft(
             amount=item["amount"],

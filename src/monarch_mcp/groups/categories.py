@@ -24,6 +24,7 @@ from monarch_api import (
 
 from monarch_mcp.serialization import to_jsonable
 from monarch_mcp.session import require_session
+from monarch_mcp.schemas import CategoryFilterInput, CategoryTypeValue
 from monarch_mcp.tool_metadata import register_api_tool
 
 
@@ -33,9 +34,13 @@ def category_type_from_str(value: str | None) -> CategoryType | None:
     return CategoryType(value)
 
 
-def category_filter_from_dict(filters: dict[str, Any] | None) -> CategoryFilter | None:
+def category_filter_from_dict(
+    filters: CategoryFilterInput | dict[str, Any] | None,
+) -> CategoryFilter | None:
     if filters is None:
         return None
+    if isinstance(filters, CategoryFilterInput):
+        filters = filters.model_dump(exclude_none=True)
     types = filters.get("types")
     return CategoryFilter(
         group_ids=filters.get("group_ids"),
@@ -45,7 +50,7 @@ def category_filter_from_dict(filters: dict[str, Any] | None) -> CategoryFilter 
 
 def list_categories(
     *,
-    filters: dict[str, Any] | None = None,
+    filters: CategoryFilterInput | None = None,
     include_disabled: bool = False,
     session_path: str | None = None,
 ) -> Any:
@@ -160,7 +165,7 @@ def reorder_category(
 def create_category_group(
     *,
     name: str,
-    type: str,
+    type: CategoryTypeValue,
     session_path: str | None = None,
 ) -> Any:
     return to_jsonable(
@@ -176,7 +181,7 @@ def update_category_group(
     group_id: str,
     *,
     name: str | None = None,
-    type: str | None = None,
+    type: CategoryTypeValue | None = None,
     session_path: str | None = None,
 ) -> Any:
     return to_jsonable(
