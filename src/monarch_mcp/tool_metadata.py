@@ -47,7 +47,7 @@ def register_api_tool(
 
 def _description(function_name: str) -> str:
     action = function_name.replace("_", " ")
-    description = f"{action.capitalize()} via monarch_api.{function_name}."
+    description = f"{action.capitalize()}."
     if function_name.startswith(DESTRUCTIVE_PREFIXES):
         description += " This may delete, clear, reset, or otherwise remove data."
     elif function_name.startswith(WRITE_PREFIXES):
