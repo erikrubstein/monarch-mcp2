@@ -65,6 +65,5 @@ def test_list_accounts_loads_session_and_serializes(monkeypatch, tmp_path) -> No
             "include_in_net_worth": None,
             "logo_url": None,
             "icon": None,
-            "raw": None,
         }
     ]

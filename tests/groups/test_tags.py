@@ -41,7 +41,6 @@ def test_list_tags_loads_session_and_serializes(monkeypatch, tmp_path) -> None:
             "color": "#ffffff",
             "order": 1,
             "transaction_count": None,
-            "raw": None,
         }
     ]
 

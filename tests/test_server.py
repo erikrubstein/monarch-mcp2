@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import pytest
+from monarch_api import Account
 
+from monarch_mcp.groups import accounts
 from monarch_mcp.server import create_mcp
 
 
@@ -188,3 +190,84 @@ async def test_server_exposes_typed_input_schemas() -> None:
     line_item = receipt_schema["$defs"]["ReceiptLineItemUpdateInput"]
     assert line_item["additionalProperties"] is False
     assert line_item["required"] == ["line_item_id"]
+
+
+@pytest.mark.anyio
+async def test_server_exposes_output_controls() -> None:
+    mcp = create_mcp()
+
+    tools = await mcp.list_tools()
+    by_name = {tool.name: tool for tool in tools}
+
+    schema = by_name["accounts_list_accounts"].inputSchema
+    assert schema["properties"]["output_mode"]["enum"] == ["summary", "full", "raw"]
+    assert schema["properties"]["output_mode"]["default"] == "summary"
+    assert "fields" in schema["properties"]
+    assert by_name["accounts_list_accounts"].outputSchema is None
+
+
+@pytest.mark.anyio
+async def test_tool_output_modes(monkeypatch, tmp_path) -> None:
+    session_path = tmp_path / "session.json"
+    session_path.write_text(
+        '{"token":"token-123","token_expiration":null,"user_id":"user-123","email":"person@example.com"}',
+        encoding="utf-8",
+    )
+
+    def fake_list_accounts(session, *, filters=None):
+        assert session.token == "token-123"
+        return [
+            Account(
+                id="account-1",
+                display_name="Checking",
+                balance=100.0,
+                raw={"logo": "large-payload"},
+            )
+        ]
+
+    monkeypatch.setattr(accounts, "api_list_accounts", fake_list_accounts)
+    mcp = create_mcp()
+
+    summary = await mcp._tool_manager.call_tool(
+        "accounts_list_accounts",
+        {"session_path": str(session_path)},
+        convert_result=False,
+    )
+    assert summary == [
+        {
+            "id": "account-1",
+            "name": "Checking",
+            "type": None,
+            "subtype": None,
+            "institution": None,
+            "balance": "$100.00",
+            "net_worth": "",
+            "hidden": "",
+        }
+    ]
+
+    full = await mcp._tool_manager.call_tool(
+        "accounts_list_accounts",
+        {"session_path": str(session_path), "output_mode": "full"},
+        convert_result=False,
+    )
+    assert full[0]["display_name"] == "Checking"
+    assert "raw" not in full[0]
+
+    raw = await mcp._tool_manager.call_tool(
+        "accounts_list_accounts",
+        {"session_path": str(session_path), "output_mode": "raw"},
+        convert_result=False,
+    )
+    assert raw[0]["raw"] == {"logo": "large-payload"}
+
+    projected = await mcp._tool_manager.call_tool(
+        "accounts_list_accounts",
+        {
+            "session_path": str(session_path),
+            "output_mode": "raw",
+            "fields": ["id", "raw.logo"],
+        },
+        convert_result=False,
+    )
+    assert projected == [{"id": "account-1", "raw.logo": "large-payload"}]
