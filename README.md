@@ -49,29 +49,65 @@ After installation, confirm the `monarch-mcp` command is available:
 which monarch-mcp
 ```
 
-Use the absolute path from `which monarch-mcp` in your MCP client config.
-
 ## Codex
 
-Add the server to your Codex config at `~/.codex/config.toml`:
+Add the server to Codex:
 
-```toml
-[mcp_servers.monarch]
-command = "/absolute/path/to/monarch-mcp"
-args = []
-startup_timeout_sec = 30
-
-[mcp_servers.monarch.env]
-MONARCH_SESSION_PATH = "/absolute/path/to/session.json"
+```bash
+codex mcp add monarch -- monarch-mcp
 ```
 
-Restart Codex after editing the config. Once loaded, Codex should see tools such
+If your session file is somewhere other than the default path, include
+`MONARCH_SESSION_PATH`:
+
+```bash
+codex mcp add \
+  --env MONARCH_SESSION_PATH="/absolute/path/to/session.json" \
+  monarch \
+  -- monarch-mcp
+```
+
+Verify the server was added:
+
+```bash
+codex mcp list
+```
+
+Restart Codex after adding the server. Once loaded, Codex should see tools such
 as `accounts_list_accounts`, `transactions_list_transactions`, and
 `budget_get_budget`.
 
+## Claude Code
+
+Add the server to Claude Code:
+
+```bash
+claude mcp add --scope user monarch -- monarch-mcp
+```
+
+If your session file is somewhere other than the default path, include
+`MONARCH_SESSION_PATH`:
+
+```bash
+claude mcp add \
+  --scope user \
+  -e MONARCH_SESSION_PATH="/absolute/path/to/session.json" \
+  monarch \
+  -- monarch-mcp
+```
+
+Verify the server was added:
+
+```bash
+claude mcp list
+```
+
+Restart Claude Code after adding the server.
+
 ## Claude Desktop
 
-Add the server to your Claude Desktop config file.
+Claude Desktop uses a JSON config file rather than the Claude Code `claude mcp`
+command.
 
 On macOS, the config file is usually:
 
