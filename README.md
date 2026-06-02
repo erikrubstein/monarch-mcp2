@@ -243,6 +243,25 @@ Examples:
 When `fields` is provided, it is applied to the selected full/raw data and the
 tool returns the projected object directly.
 
+## Transaction Review Skill
+
+This repo includes a Codex skill at:
+
+```text
+skills/monarch-transaction-review
+```
+
+The skill helps agents prepare unreviewed Monarch transactions without marking
+them reviewed. It uses workflow tags such as `AI Review Ready` and keeps private
+learned preferences in:
+
+```text
+~/.config/monarch/transaction-review-memory.md
+```
+
+Install or reference the skill from your Codex skills directory when you want
+agents to use the transaction review workflow automatically.
+
 ## Development
 
 Run the test suite:
