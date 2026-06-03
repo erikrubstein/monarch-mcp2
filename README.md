@@ -252,8 +252,9 @@ skills/monarch-transaction-review
 ```
 
 The skill helps agents prepare unreviewed Monarch transactions without marking
-them reviewed. It uses workflow tags such as `AI Review Ready` and keeps private
-learned preferences in:
+them reviewed. It uses workflow tags such as `AI Prepared` and
+`AI Needs Context`, then leaves the Monarch review status for the human review
+stage. It keeps private learned preferences in:
 
 ```text
 ~/.config/monarch/transaction-review-memory.md

@@ -1,13 +1,13 @@
 ---
 name: monarch-transaction-review
-description: Review Monarch Money transactions with the Monarch MCP server while learning the user's merchant, category, tag, note, receipt, and recurring spending preferences. Use when the user asks Codex to review, categorize, tag, annotate, prepare, approve, correct, or learn from Monarch transactions, especially unreviewed transactions or transactions tagged for AI/manual review.
+description: Prepare and review Monarch Money transactions with the Monarch MCP server while learning the user's merchant, category, tag, note, receipt, and recurring spending preferences. Use when the user asks Codex to prepare, review, categorize, tag, annotate, correct, or learn from Monarch transactions, especially unreviewed transactions or transactions tagged for AI preparation/human review.
 ---
 
 # Monarch Transaction Review
 
 ## Core Rule
 
-Never mark a transaction reviewed during AI preparation. Only mark a transaction reviewed after the user explicitly approves it in a manual review step.
+Never mark a transaction reviewed during AI preparation. Only mark a transaction reviewed during the human review stage after the user explicitly says to mark it reviewed.
 
 Use the Monarch MCP server tools. Prefer exact tool names when available, such as:
 
@@ -49,8 +49,8 @@ Only update memory from explicit user corrections, user-provided preferences, or
 
 Use these review workflow tags:
 
-- `AI Review Ready`: AI prepared the transaction and it is waiting for user approval.
-- `AI Review Needs Context`: AI could not confidently decide what to do.
+- `AI Prepared` (`#3B82F6`): AI prepared the transaction and it is waiting for human review.
+- `AI Needs Context` (`#F59E0B`): AI could not confidently decide what to do.
 
 Create missing tags when needed. Preserve unrelated user tags.
 
@@ -62,29 +62,29 @@ When the user asks to review or prepare transactions:
 2. Find unreviewed transactions, usually with `filters.needs_review=true`.
 3. Inspect enough context to decide safely. Use `output_mode="full"` when summary output lacks needed fields.
 4. Apply high-confidence updates to merchant, category, tags, notes, or other editable fields.
-5. Add `AI Review Ready` when updated or confidently left unchanged for approval.
-6. Add `AI Review Needs Context` when the transaction needs user clarification.
+5. Add `AI Prepared` when updated or confidently left unchanged for human review.
+6. Add `AI Needs Context` when the transaction needs user clarification.
 7. Do not set `review_status="reviewed"` in this phase.
 8. Summarize actions as: transaction id, merchant/date/amount, changes made, confidence, and questions.
 
-If confidence is low, prefer tagging `AI Review Needs Context` over guessing.
+If confidence is low, prefer tagging `AI Needs Context` over guessing.
 
-## Manual Approval Loop
+## Human Review Loop
 
-When the user asks to approve, audit, or manually review AI-prepared transactions:
+When the user asks to review, audit, or manually review AI-prepared transactions:
 
-1. Fetch transactions tagged `AI Review Ready`, one at a time unless the user asks for a batch.
+1. Fetch transactions tagged `AI Prepared`, one at a time unless the user asks for a batch.
 2. Show the transaction, the current proposed state, and why the agent thinks it is correct.
-3. Ask for one of: approve, correct, needs context, skip.
-4. On approve:
-   - remove `AI Review Ready`
+3. Ask for one of: mark reviewed, correct, needs context, skip.
+4. On mark reviewed:
+   - remove `AI Prepared`
    - set `review_status="reviewed"`
 5. On correct:
    - apply the correction
    - update memory with the lesson
-   - ask whether to approve now
+   - ask whether to mark reviewed now
 6. On needs context:
-   - replace `AI Review Ready` with `AI Review Needs Context`
+   - replace `AI Prepared` with `AI Needs Context`
    - add the open question to memory
 7. On skip:
    - leave the transaction unchanged
