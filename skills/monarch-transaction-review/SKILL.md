@@ -9,13 +9,20 @@ description: Prepare and review Monarch Money transactions with the Monarch MCP 
 
 Never mark a transaction reviewed during AI preparation. Only mark a transaction reviewed during the human review stage after the user explicitly says to mark it reviewed.
 
-Use the Monarch MCP server tools. Prefer exact tool names when available, such as:
+Use the Monarch MCP server tools. Match the tool group to the user's request:
 
-- `transactions_list_transactions`
-- `transactions_get_transaction`
-- `transactions_update_transaction`
-- `tags_list_tags`
-- `tags_create_tag`
+- Transaction preparation or human review queues: use `transactions_*` plus `tags_*`.
+- Cashflow summaries, trends, or breakdowns: use `cashflow_*`.
+- Report-style grouped spending/income analysis: use `reports_*`.
+- Budgets, budget months, budget category amounts, or rollover settings: use `budget_*`.
+- Recurring bills, subscriptions, income, or expected payment schedules: use `recurring_*`.
+- Accounts, balances, net worth, or account history: use `accounts_*`.
+- Receipts, receipt matching, or receipt settings: use `receipts_*`.
+- Merchants, categories, tags, household, goals, or investments: use the matching group.
+
+Do not list transactions merely to answer an aggregate request when a purpose-built Monarch tool exists. For example, answer "cashflow breakdown for last month" with `cashflow_get_cashflow_breakdown`, not `transactions_list_transactions`, unless the user asks to inspect the underlying transactions.
+
+If the request is not about transaction preparation or human review, do not add workflow tags, update transaction review status, or update memory unless the user explicitly provides a reusable preference or correction.
 
 ## Private Memory
 
