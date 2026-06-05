@@ -96,6 +96,38 @@ When the user asks to review, audit, or manually review AI-prepared transactions
 7. On skip:
    - leave the transaction unchanged
 
+## Retry Needs Context
+
+When the user asks to retry, revisit, or check transactions that need context:
+
+1. Fetch transactions tagged `AI Needs Context`.
+2. Focus first on transactions that now have notes or other new context.
+3. Treat newly added notes as likely user clarification, but still inspect the transaction.
+4. Re-attempt preparation using memory, notes, merchant, amount, account, date, and tags.
+5. If the new context is enough:
+   - apply the prepared updates
+   - replace `AI Needs Context` with `AI Prepared`
+   - do not set `review_status="reviewed"`
+6. If context is still lacking:
+   - keep `AI Needs Context`
+   - summarize what is still missing
+   - update memory only if the user provided a reusable preference or correction
+
+Do not assume any note is permission to mark reviewed. Notes are clarification for preparation, not human review approval.
+
+## Match Receipts
+
+When the user asks to match receipts:
+
+1. Use `receipts_list_receipts` to find receipts, then identify unmatched receipts from full output fields such as `is_matched` and `transaction_id`. Filter by receipt `status` when useful, but do not assume status alone means matched or unmatched.
+2. For each unmatched receipt, search candidate transactions with `transactions_list_transactions` using date, amount, merchant, and account context.
+3. Match only when confidence is high, such as matching date, amount, and merchant or a clear user note.
+4. Use `receipts_match_receipt` for high-confidence matches.
+5. Leave ambiguous receipts unmatched and summarize the candidates or missing context.
+6. Do not alter transaction review status as part of receipt matching unless the user explicitly asks.
+
+When receipt matching reveals a durable user preference or spending habit, add it to memory. For example, "gas receipts are often absent" belongs in memory; a one-off receipt match usually does not.
+
 ## Learning Rules
 
 Update memory in concise, durable rules. Prefer rules that will help future transactions:
