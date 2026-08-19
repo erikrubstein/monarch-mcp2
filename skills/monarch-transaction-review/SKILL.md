@@ -119,7 +119,7 @@ Do not assume any note is permission to mark reviewed. Notes are clarification f
 
 When the user asks to match receipts:
 
-1. Use `receipts_list_receipts` to find receipts, then identify unmatched receipts from full output fields such as `is_matched` and `transaction_id`. Filter by receipt `status` when useful, but do not assume status alone means matched or unmatched.
+1. Use `receipts_list_receipts` to find receipts, then identify unmatched receipts from full output fields such as `is_matched` and `transaction_id`. The default includes uploaded and emailed receipts; filter by `source` only when useful. Filter by receipt `status` when useful, but do not assume status alone means matched or unmatched.
 2. For each unmatched receipt, search candidate transactions with `transactions_list_transactions` using date, amount, merchant, and account context.
 3. Match only when confidence is high, such as matching date, amount, and merchant or a clear user note.
 4. Use `receipts_match_receipt` for high-confidence matches.

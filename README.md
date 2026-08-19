@@ -197,6 +197,9 @@ budget_get_budget
 The full server currently exposes 125 tools across all implemented API groups.
 Use an MCP client or MCP Inspector to browse the complete tool list and schemas.
 
+`receipts_list_receipts` returns uploaded and emailed receipts by default. Its
+optional `filters.source` value can be `upload` or `email`.
+
 ## Output
 
 By default, tools return compact `summary` output. This is intended for agent

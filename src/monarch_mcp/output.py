@@ -321,6 +321,7 @@ def receipt_row(receipt: dict[str, Any]) -> dict[str, Any]:
     return {
         "id": g(receipt, "id"),
         "status": enum_value(g(receipt, "status")),
+        "source": enum_value(g(receipt, "source")),
         "merchant": g(order, "merchant_name"),
         "date": g(order, "date"),
         "total": format_money(g(order, "grand_total")),
@@ -336,6 +337,7 @@ def receipt_details(receipt: dict[str, Any]) -> dict[str, Any]:
     return {
         "id": g(receipt, "id"),
         "status": enum_value(g(receipt, "status")),
+        "source": enum_value(g(receipt, "source")),
         "merchant": g(order, "merchant_name"),
         "date": g(order, "date"),
         "total_before_tax": format_money(g(order, "total_before_tax")),

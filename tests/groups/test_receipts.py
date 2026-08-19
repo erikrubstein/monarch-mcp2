@@ -15,6 +15,7 @@ def test_list_receipts_maps_filter(monkeypatch, tmp_path) -> None:
     def fake_list_receipts(session, *, filters=None, limit=100, offset=0):
         assert session.token == "token-123"
         assert filters.status.value == "completed"
+        assert filters.source.value == "email"
         assert limit == 25
         assert offset == 5
         return ReceiptPage(receipts=[], total_count=0, limit=limit, offset=offset)
@@ -22,7 +23,7 @@ def test_list_receipts_maps_filter(monkeypatch, tmp_path) -> None:
     monkeypatch.setattr(receipts, "api_list_receipts", fake_list_receipts)
 
     result = receipts.list_receipts(
-        filters={"status": "completed"},
+        filters={"status": "completed", "source": "email"},
         limit=25,
         offset=5,
         session_path=str(session_path),

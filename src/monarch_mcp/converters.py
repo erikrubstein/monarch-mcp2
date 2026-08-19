@@ -7,6 +7,7 @@ from monarch_api.types.categories import CategoryType
 from monarch_api.types.receipts import (
     ReceiptFilter,
     ReceiptLineItemUpdate,
+    ReceiptSource,
     ReceiptStatus,
 )
 from monarch_api.types.recurring import RecurringFilter
@@ -105,8 +106,10 @@ def receipt_filter(data: dict[str, Any] | None) -> ReceiptFilter | None:
     if data is None:
         return None
     status = data.get("status")
+    source = data.get("source")
     return ReceiptFilter(
         status=ReceiptStatus(status) if status is not None else None,
+        source=ReceiptSource(source) if source is not None else None,
     )
 
 

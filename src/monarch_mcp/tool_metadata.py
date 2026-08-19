@@ -35,6 +35,11 @@ WRITE_PREFIXES = (
     "withdraw_",
 )
 DESTRUCTIVE_PREFIXES = ("clear_", "delete_", "remove_", "reset_")
+SPECIAL_DESCRIPTIONS = {
+    "list_receipts": (
+        "List uploaded and emailed receipts, optionally filtered by source or status."
+    ),
+}
 
 
 def register_api_tool(
@@ -114,6 +119,8 @@ def _signature_with_output_controls(function: Callable) -> inspect.Signature:
 
 
 def _description(function_name: str) -> str:
+    if function_name in SPECIAL_DESCRIPTIONS:
+        return SPECIAL_DESCRIPTIONS[function_name]
     action = function_name.replace("_", " ")
     description = f"{action.capitalize()}."
     if function_name.startswith(DESTRUCTIVE_PREFIXES):

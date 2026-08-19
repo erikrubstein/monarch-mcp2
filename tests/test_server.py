@@ -191,6 +191,11 @@ async def test_server_exposes_typed_input_schemas() -> None:
     assert line_item["additionalProperties"] is False
     assert line_item["required"] == ["line_item_id"]
 
+    receipt_list_schema = by_name["receipts_list_receipts"].inputSchema
+    receipt_filter = receipt_list_schema["$defs"]["ReceiptFilterInput"]
+    source_schema = receipt_filter["properties"]["source"]
+    assert source_schema["anyOf"][0]["enum"] == ["upload", "email"]
+
 
 @pytest.mark.anyio
 async def test_server_exposes_output_controls() -> None:

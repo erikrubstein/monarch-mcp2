@@ -48,3 +48,22 @@ def test_fields_project_from_full_output() -> None:
     )
 
     assert result == [{"id": "account-1", "raw.logo": "large-payload"}]
+
+
+def test_receipt_summary_includes_source() -> None:
+    result = shape_output(
+        "receipts_list_receipts",
+        {
+            "receipts": [
+                {
+                    "id": "receipt-1",
+                    "source": "email",
+                    "status": "pending_matches",
+                    "order": {"merchant_name": "Store", "grand_total": 12.34},
+                    "is_matched": False,
+                }
+            ]
+        },
+    )
+
+    assert result[0]["source"] == "email"

@@ -31,6 +31,7 @@ ReceiptStatusValue: TypeAlias = Literal[
     "pending",
     "pending_matches",
 ]
+ReceiptSourceValue: TypeAlias = Literal["upload", "email"]
 RecurringFrequencyValue: TypeAlias = Literal[
     "weekly",
     "every_two_weeks",
@@ -160,6 +161,7 @@ class RecurringFilterInput(MonarchInput):
 
 class ReceiptFilterInput(MonarchInput):
     status: ReceiptStatusValue | None = None
+    source: ReceiptSourceValue | None = None
 
 
 class ReceiptLineItemUpdateInput(MonarchInput):
